@@ -1,6 +1,9 @@
 'use strict';
-/* ===== BEYOND – site logic. Edit only CONFIG.SHEET_ID. ===== */
-const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', WALL_TAB: 'Wall', RECENT: 6 };
+/* ===== BEYOND – site logic. Edit only CONFIG. =====
+   SHEET_ID: the ID in the Google Sheet URL.
+   *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
+   which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
+const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
 const NAV = [['home','Home'],['class9','Class 9'],['class10','Class 10'],['qbank','Question Bank'],['exam','Exam Resources'],['extra','Extra Resources'],['wall','Words on the Wall']];
 const SUBJECTS = ['Science','Biology','Chemistry'];
 const WALL_CATS = ['A Thought for Today',"A Teacher's Note",'Words of Encouragement','Ask Yourself','Beyond Books','Curiosity Corner','Life Lessons','Questions Worth Asking'];
@@ -23,12 +26,30 @@ function parseCSV(t){
   if(c||r.length){ r.push(c); rows.push(r); }
   return rows;
 }
-async function fetchTab(tab){
-  const url=`https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
-  const res=await fetch(url); if(!res.ok) throw new Error('HTTP '+res.status);
-  const rows=parseCSV(await res.text()); if(!rows.length) return [];
-  const keys=rows[0].map(h=>h.toLowerCase().replace(/[^a-z]/g,''));
-  return rows.slice(1).map(r=>{ const o={}; keys.forEach((k,i)=>o[k]=(r[i]||'').trim()); return o; });
+/* Header aliases so small wording changes in the sheet still match. */
+const ALIAS = { url:'fileurl', link:'fileurl', file:'fileurl', type:'resourcetype', date:'uploaddate', publishdate:'publicationdate', visible:'visibility', show:'visibility' };
+const normKey = h => { const k=String(h).replace(/^\uFEFF/,'').toLowerCase().replace(/[^a-z]/g,''); return ALIAS[k]||k; };
+async function getCSV(url){
+  const res=await fetch(url,{cache:'no-store'});
+  if(!res.ok) throw new Error('HTTP '+res.status+' for '+url);
+  const type=res.headers.get('content-type')||'';
+  if(!/csv|text\/plain/i.test(type)) throw new Error('Not CSV ('+type+') for '+url);
+  const rows=parseCSV(await res.text());
+  if(!rows.length||!rows[0].map(normKey).includes('title')) throw new Error('No "Title" header in '+url);
+  return rows;
+}
+async function fetchTab(tab,gid){
+  const base=`https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}`;
+  /* gviz: headers=1 stops Google merging data rows into the header row. */
+  const gviz=`${base}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(tab)}`;
+  let rows;
+  if(gid){
+    try{ rows=await getCSV(`${base}/export?format=csv&gid=${encodeURIComponent(gid)}`); }
+    catch(e){ console.warn('Export failed, using gviz:',e.message); }
+  }
+  if(!rows) rows=await getCSV(gviz);
+  const keys=rows[0].map(normKey);
+  return rows.slice(1).map(r=>{ const o={}; keys.forEach((k,i)=>{ if(k&&!(k in o&&o[k])) o[k]=(r[i]||'').trim(); }); return o; });
 }
 const SHOW=['yes','y','true','show','visible','1'];
 const isOn = v => SHOW.includes((v||'').toLowerCase());
@@ -52,9 +73,9 @@ async function load(){
   state.status='loading'; render();
   if(CONFIG.SHEET_ID.startsWith('PASTE')){ state.status='setup'; render(); return; }
   try{
-    const [r,w]=await Promise.all([fetchTab(CONFIG.RES_TAB),fetchTab(CONFIG.WALL_TAB)]);
+    const [r,w]=await Promise.all([fetchTab(CONFIG.RES_TAB,CONFIG.RES_GID),fetchTab(CONFIG.WALL_TAB,CONFIG.WALL_GID)]);
     state.res=r.filter(o=>o.title).map(mapRes).filter(x=>x.on).sort(byDate);
-    state.wall=w.filter(o=>o.title&&o.content).map(o=>({id:o.id,title:o.title,content:o.content,cat:o.category,date:pd(o.publicationdate),feat:yes(o.featured),on:isOn(o.visibility)})).filter(x=>x.on).sort(byDate);
+    state.wall=w.filter(o=>o.title&&o.content).map(o=>({id:o.id,title:o.title,content:o.content,cat:o.category,date:pd(o.publicationdate||o.uploaddate),feat:yes(o.featured),on:isOn(o.visibility)})).filter(x=>x.on).sort(byDate);
     state.status='ok';
   }catch(e){ console.error(e); state.status='error'; }
   render();
