@@ -61,11 +61,11 @@ h1,h2,h3{color:var(--navy);line-height:1.25;margin:0 0 .4em;font-weight:800;lett
 .qa:hover{border-color:var(--cyan);background:var(--tint)}
 .cls{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:16px}
 .cls h3{margin-bottom:12px;font-size:1.2rem}
-.subs{display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
+.subs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .sc{display:block;border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:10px;padding:12px 10px;background:var(--bg);font-weight:700;color:var(--navy);cursor:pointer;text-align:left;font:inherit;font-weight:700}
 .sc:hover{background:var(--tint)}
 .sc small{display:block;color:var(--cyan-d);font-weight:600;font-size:.78rem}
-@media(max-width:420px){.subs{grid-template-columns:1fr}}
+@media(max-width:420px){.subs{grid-template-columns:repeat(2,1fr)}}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px}
 .card h3{font-size:1.05rem;margin:2px 0 0}
 .card .row{display:flex;justify-content:space-between;gap:8px;align-items:center}

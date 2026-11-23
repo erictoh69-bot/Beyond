@@ -5,7 +5,13 @@
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
 const NAV = [['home','Home'],['class9','Class 9'],['class10','Class 10'],['qbank','Question Bank'],['exam','Exam Resources'],['extra','Extra Resources'],['wall','Words on the Wall']];
-const SUBJECTS = ['Science','Biology','Chemistry'];
+/* Subject buttons, in display order. Any subject in the sheet that does not match one of these
+   (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
+const SUBJECTS = ['Bangla','English','Math','Science','Biology','Chemistry'];
+const OTHER = 'Others';
+const ALL_SUBJECTS = [...SUBJECTS, OTHER];
+/* Other spellings that count as the same subject. "Bangla 1st Paper", "English 2nd Paper" etc. also match. */
+const SUB_ALIAS = { Bangla:['bangla','bengali','বাংলা'], English:['english','ইংরেজি'], Math:['math','maths','mathematics','generalmath','generalmathematics','গণিত'] };
 const WALL_CATS = ['A Thought for Today',"A Teacher's Note",'Words of Encouragement','Ask Yourself','Beyond Books','Curiosity Corner','Life Lessons','Questions Worth Asking'];
 const LABELS = { cls:'Class', subject:'Subject', chapter:'Chapter', type:'Type' };
 const state = { res:[], wall:[], status:'loading', q:'', f:{} };
@@ -61,10 +67,18 @@ function pd(s){
   const t=Date.parse(s); return isNaN(t)?0:t;
 }
 const fmt = t => t ? new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}) : '';
+function subjectGroup(raw){
+  const t=String(raw||'').trim().toLowerCase(), k=t.replace(/[^a-z]/g,'');
+  for(const s of SUBJECTS){
+    const names=[s.toLowerCase(),...(SUB_ALIAS[s]||[])];
+    if(names.some(n=>/^[a-z]+$/.test(n)?k.startsWith(n):t.startsWith(n))) return s;
+  }
+  return OTHER;
+}
 function mapRes(o){
   const cm=(o.class||'').match(/\b(9|10)\b/);
   const sub=SUBJECTS.find(s=>s.toLowerCase()===(o.subject||'').toLowerCase())||o.subject;
-  return { id:o.id, title:o.title, cls:cm?cm[1]:'', subject:sub, chapter:o.chapter, cat:o.category, type:o.resourcetype,
+  return { id:o.id, title:o.title, cls:cm?cm[1]:'', subject:sub, grp:subjectGroup(o.subject), chapter:o.chapter, cat:o.category, type:o.resourcetype,
     desc:o.description, kw:o.keywords, url:o.fileurl, date:pd(o.uploaddate), feat:yes(o.featured), on:isOn(o.visibility) };
 }
 function kind(r){ const c=(r.cat||'').toLowerCase(); return c.includes('question')?'qbank':c.includes('exam')?'exam':c.includes('extra')?'extra':'class'; }
@@ -124,7 +138,7 @@ const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
     const quick=[['class9','Class 9'],['class10','Class 10'],['qbank','Question Bank'],['exam','Exam Resources'],['extra','Extra Resources']];
-    const cls=n=>`<div class="cls"><h3>Class ${n}</h3><div class="subs">${SUBJECTS.map(s=>`<button class="sc" data-go="class${n}" data-sub="${s}"><small>Class ${n}</small>${s}</button>`).join('')}</div></div>`;
+    const cls=n=>`<div class="cls"><h3>Class ${n}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc" data-go="class${n}" data-sub="${s}"><small>Class ${n}</small>${s}</button>`).join('')}</div></div>`;
     return `<section class="hero"><div class="in"><h1>Welcome to BEYOND</h1><h2>More than books. More than grades. More than yesterday.</h2>
     <p>A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.</p>${sform()}</div></section>
     <section class="wrap"><div class="quick">${quick.map(([h,t])=>`<a class="qa" href="#${h}">${t}</a>`).join('')}</div>
@@ -134,8 +148,8 @@ const V = {
   classView(n){
     const v='class'+n, f=state.f[v]||(state.f[v]={});
     const all=state.res.filter(r=>r.cls===String(n)&&kind(r)==='class');
-    const items=all.filter(r=>!f.subject||r.subject===f.subject);
-    const chips=`<div class="chips">${['',...SUBJECTS].map(s=>`<button class="chip${(f.subject||'')===s?' on':''}" data-chip="${v}" data-sub="${s}">${s||'All subjects'}</button>`).join('')}</div>`;
+    const items=all.filter(r=>!f.subject||r.grp===f.subject);
+    const chips=`<div class="chips">${['',...ALL_SUBJECTS].map(s=>`<button class="chip${(f.subject||'')===s?' on':''}" data-chip="${v}" data-sub="${s}">${s||'All subjects'}</button>`).join('')}</div>`;
     return listView(v,items,['chapter','type'],`Class ${n}`,'Notes, worksheets, questions and more, organised chapter by chapter.',chips);
   },
   qbank(){ return listView('qbank',state.res.filter(r=>kind(r)==='qbank'),['cls','subject','chapter','type'],'Question Bank','CQ, SQ, MCQ, board questions and practice sets. Filter by class, subject, chapter and type.'); },
@@ -152,7 +166,7 @@ const V = {
   search(){
     const f=state.f.search||(state.f.search={});
     const toks=state.q.toLowerCase().split(/\s+/).filter(Boolean);
-    const hay=r=>[r.title,r.kw,r.subject,r.chapter,r.chapter&&'chapter '+r.chapter,r.desc,r.cat,r.type,r.cls&&'class '+r.cls].join(' ').toLowerCase();
+    const hay=r=>[r.title,r.kw,r.subject,r.grp,r.chapter,r.chapter&&'chapter '+r.chapter,r.desc,r.cat,r.type,r.cls&&'class '+r.cls].join(' ').toLowerCase();
     const hits=toks.length?state.res.filter(r=>{const h=hay(r);return toks.every(t=>h.includes(t));}):[];
     const shown=hits.filter(r=>['cls','subject','chapter','type'].every(k=>!f[k]||String(r[k])===f[k]));
     const hasF=Object.values(f).some(Boolean);
