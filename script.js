@@ -32,7 +32,7 @@ nothing_t:'Nothing found yet',nothing_m:'Try another word, or clear the filters.
 no_res_t:'No resources yet',no_res_m:'New materials will appear here as soon as they are added.',
 load_err_t:'Could not load resources',load_err_m:'Check your internet connection, then',retry:'try again',
 setup_t:'Almost ready',setup_m:'The resource list has not been connected yet.',
-clear:'Clear filters',all:'All',all_subjects:'All subjects',resources:'{n} resources',results_for:'{n} results for “{q}”',
+clear:'Clear filters',all:'All',all_subjects:'All subjects',resources:'{n} resources',resources_one:'1 resource',results_for:'{n} results for “{q}”',results_for_one:'1 result for “{q}”',
 view:'View',open:'Open',download:'Download',soon:'Link coming soon',save:'Save',saved:'Saved',new:'NEW',
 on_wall:'On the wall',footer:'An independent learning space, built around the belief that knowledge should be accessible to everyone.',
 empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear here soon.',
@@ -53,7 +53,7 @@ nothing_t:'এখনো কিছু পাওয়া যায়নি',noth
 no_res_t:'এখনো কোনো রিসোর্স নেই',no_res_m:'নতুন কিছু যোগ হলেই এখানে দেখা যাবে।',
 load_err_t:'রিসোর্স লোড করা যায়নি',load_err_m:'ইন্টারনেট সংযোগ দেখে',retry:'আবার চেষ্টা করো',
 setup_t:'প্রায় প্রস্তুত',setup_m:'রিসোর্সের তালিকা এখনো যুক্ত করা হয়নি।',
-clear:'ফিল্টার মুছুন',all:'সবগুলো',all_subjects:'সব বিষয়',resources:'{n} টি রিসোর্স',results_for:'“{q}” এর জন্য {n} টি ফলাফল',
+clear:'ফিল্টার মুছুন',all:'সবগুলো',all_subjects:'সব বিষয়',resources:'{n} টি রিসোর্স',resources_one:'১ টি রিসোর্স',results_for:'“{q}” এর জন্য {n} টি ফলাফল',results_for_one:'“{q}” এর জন্য ১ টি ফলাফল',
 view:'দেখুন',open:'খুলুন',download:'ডাউনলোড',soon:'লিংক শীঘ্রই আসছে',save:'সেভ করুন',saved:'সেভ করা',new:'নতুন',
 on_wall:'দেয়ালে',footer:'একটি স্বাধীন শেখার জায়গা — জ্ঞান সবার জন্য সহজলভ্য হওয়া উচিত, এই বিশ্বাস থেকে তৈরি।',
 empty_wall_t:'দেয়াল এখন শান্ত',empty_wall_m:'নতুন কথা এলে এখানে দেখা যাবে।',
@@ -65,6 +65,8 @@ const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return n
 const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en' };
 const t = (k,v) => { let s=(STR[state.lang]&&STR[state.lang][k])||STR.en[k]||k; if(v) for(const key in v) s=s.split('{'+key+'}').join(v[key]); return s; };
 const num = n => state.lang==='bn' ? String(n).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d]) : String(n);
+const rc = n => n===1 ? t('resources_one') : t('resources',{n});
+const rf = (n,q) => n===1 ? t('results_for_one',{q}) : t('results_for',{n,q});
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -188,7 +190,7 @@ function listView(v,items,fields,head,sub,pre=''){
   const f=state.f[v]||(state.f[v]={});
   const shown=items.filter(r=>fields.every(k=>!f[k]||String(r[k])===f[k]));
   return `<section class="wrap"><h1>${head}</h1><p class="sub">${sub}</p>${pre}${bar(v,items,fields,f)}
-  <p class="count">${t('resources',{n:shown.length})}</p>${shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:empty(t('nothing_t'),t('nothing_m'))}</section>`;
+  <p class="count">${rc(shown.length)}</p>${shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:empty(t('nothing_t'),t('nothing_m'))}</section>`;
 }
 const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type="search" name="q" value="${esc(state.q)}" placeholder="${esc(t('search_ph'))}" aria-label="Search BEYOND" autocomplete="off"><button type="submit">${t('search_btn')}</button></form>`;
 
@@ -227,7 +229,7 @@ const V = {
     const ids=savedIds();
     const items=state.res.filter(r=>ids.indexOf(r.id)>=0);
     return `<section class="wrap"><h1>${t('saved_h')}</h1><p class="sub">${t('saved_sub')}</p>
-    <p class="count">${t('resources',{n:items.length})}</p>${body(items.length?`<div class="grid">${items.map(card).join('')}</div>`:empty(t('saved_empty_t'),t('saved_empty_m')),3)}</section>`;
+    <p class="count">${rc(items.length)}</p>${body(items.length?`<div class="grid">${items.map(card).join('')}</div>`:empty(t('saved_empty_t'),t('saved_empty_m')),3)}</section>`;
   },
   search(){
     const f=state.f.search||(state.f.search={});
@@ -241,7 +243,7 @@ const V = {
     if(!toks.length) out=empty(t('search_empty_t'),t('search_empty_m'));
     else if(!shown.length&&!wh.length) out=empty(t('no_results_t'),t('no_results_m'));
     else out=(shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:'')+(wh.length?`<div class="sec"><h2>${t('on_wall')}</h2></div><div class="wall">${wh.map(wallCard).join('')}</div>`:'');
-    return `<section class="wrap"><h1>${t('search_h')}</h1>${sform('plain')}${toks.length?bar('search',hits,['cls','subject','chapter','type'],f)+`<p class="count">${t('results_for',{n:shown.length+wh.length,q:state.q})}</p>`:''}${body(out,3)}</section>`;
+    return `<section class="wrap"><h1>${t('search_h')}</h1>${sform('plain')}${toks.length?bar('search',hits,['cls','subject','chapter','type'],f)+`<p class="count">${rf(shown.length+wh.length,state.q)}</p>`:''}${body(out,3)}</section>`;
   }
 };
 /* loading / error / setup wrapper */

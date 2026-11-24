@@ -156,3 +156,12 @@ time{color:var(--muted);font-size:.8rem}
 /* save (bookmark) button */
 button.btn{font:inherit;cursor:pointer}
 .save.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* subject colours on filter chips (inactive only; active chip stays navy) */
+.chip.sb-chemistry:not(.on){border-color:#22B8E6;color:#0A7EA4}
+.chip.sb-biology:not(.on){border-color:#2E9E5B;color:#1E7A44}
+.chip.sb-bangla:not(.on){border-color:#C0392B;color:#B3261E}
+.chip.sb-english:not(.on){border-color:#7C5CFF;color:#5B45D6}
+.chip.sb-math:not(.on){border-color:#E67E22;color:#C25E10}
+.chip.sb-science:not(.on){border-color:#0E9594;color:#0B7A78}
+.chip.sb-others:not(.on){border-color:#5B6B7C;color:#5B6B7C}
