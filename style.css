@@ -116,3 +116,43 @@ time{color:var(--muted);font-size:.8rem}
 /* footer */
 .foot{background:var(--navy);color:#C9D7E6;text-align:center;padding:28px 16px;font-size:.92rem}
 .foot p{max-width:56ch;margin:0 auto}
+
+/* language toggle */
+.langbtn{order:2;margin-left:auto;background:var(--navy2);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;font:inherit;font-weight:700;font-size:.9rem;padding:8px 14px;cursor:pointer;min-height:40px}
+.burger{order:3}
+@media(min-width:900px){.langbtn{margin-left:0;order:3}}
+
+/* popular searches */
+.pop{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.pop span{color:#9FB6CF;font-size:.85rem;font-weight:600}
+.pop button{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:.85rem;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;min-height:36px}
+.pop button:hover{background:rgba(255,255,255,.18)}
+
+/* bottom nav (mobile only) */
+.bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--navy);border-top:1px solid rgba(255,255,255,.15);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.bnav a{flex:1;text-align:center;color:#C9D7E6;text-decoration:none;font-size:.78rem;font-weight:700;padding:8px 2px;border-radius:8px}
+.bnav a.on{color:#fff;background:var(--navy2)}
+@media(min-width:900px){.bnav{display:none}}
+@media(max-width:899px){body{padding-bottom:64px}}
+
+/* NEW badge + subject colours */
+.badges{display:flex;gap:6px;align-items:center}
+.new{background:#E53935;color:#fff;font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:999px;letter-spacing:.02em}
+.badge.sb-chemistry{background:#E0F2F8;color:#0A7EA4}
+.badge.sb-biology{background:#E2F4E9;color:#1E7A44}
+.badge.sb-bangla{background:#FBE9E7;color:#B3261E}
+.badge.sb-english{background:#ECEAFF;color:#5B45D6}
+.badge.sb-math{background:#FEF0E0;color:#C25E10}
+.badge.sb-science{background:#E0F4F3;color:#0B7A78}
+.badge.sb-others{background:#E9EDF2;color:#5B6B7C}
+.sc.sb-chemistry{border-left-color:#22B8E6}
+.sc.sb-biology{border-left-color:#2E9E5B}
+.sc.sb-bangla{border-left-color:#C0392B}
+.sc.sb-english{border-left-color:#7C5CFF}
+.sc.sb-math{border-left-color:#E67E22}
+.sc.sb-science{border-left-color:#0E9594}
+.sc.sb-others{border-left-color:#5B6B7C}
+
+/* save (bookmark) button */
+button.btn{font:inherit;cursor:pointer}
+.save.on{background:var(--navy);color:#fff;border-color:var(--navy)}

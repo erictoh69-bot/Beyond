@@ -4,7 +4,8 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','Home'],['class9','Class 9'],['class10','Class 10'],['qbank','Question Bank'],['exam','Exam Resources'],['extra','Extra Resources'],['wall','Words on the Wall']];
+const NAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['wall','nav_wall'],['saved','nav_saved']];
+const BNAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
 const SUBJECTS = ['Bangla','English','Math','Science','Biology','Chemistry'];
@@ -13,10 +14,64 @@ const ALL_SUBJECTS = [...SUBJECTS, OTHER];
 /* Other spellings that count as the same subject. "Bangla 1st Paper", "English 2nd Paper" etc. also match. */
 const SUB_ALIAS = { Bangla:['bangla','bengali','বাংলা'], English:['english','ইংরেজি'], Math:['math','maths','mathematics','generalmath','generalmathematics','গণিত'] };
 const WALL_CATS = ['A Thought for Today',"A Teacher's Note",'Words of Encouragement','Ask Yourself','Beyond Books','Curiosity Corner','Life Lessons','Questions Worth Asking'];
-const LABELS = { cls:'Class', subject:'Subject', chapter:'Chapter', type:'Type' };
-const state = { res:[], wall:[], status:'loading', q:'', f:{} };
+const POP = ['Acid','Tag Questions','Suggestion','Chapter 5','MCQ','Practical'];
+const NEW_DAYS = 7;
+/* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
+const STR = {
+en:{ nav_home:'Home',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
+hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
+search_ph:'Try: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'Search',popular:'Popular searches',subjects:'Subjects',recent:'Recently added',
+qbank_h:'Question Bank',qbank_sub:'CQ, SQ, MCQ, board questions and practice sets. Filter by class, subject, chapter and type.',
+exam_h:'Exam Resources',exam_sub:'Model tests, revision sheets, suggestions and previous papers.',
+extra_h:'Extra Resources',extra_sub:'Books, slides, videos and useful websites for going further.',
+wall_h:'WORDS ON THE WALL',wall_sub:'Thoughts to remember. Questions to consider. Words to carry.',
+class_sub:'Notes, worksheets, questions and more, organised chapter by chapter.',
+search_h:'Search',search_empty_t:'Search BEYOND',search_empty_m:'Type a topic, chapter or question type to begin.',
+no_results_t:'No results',no_results_m:'Try a shorter word, check the spelling, or clear the filters.',
+nothing_t:'Nothing found yet',nothing_m:'Try another word, or clear the filters.',
+no_res_t:'No resources yet',no_res_m:'New materials will appear here as soon as they are added.',
+load_err_t:'Could not load resources',load_err_m:'Check your internet connection, then',retry:'try again',
+setup_t:'Almost ready',setup_m:'The resource list has not been connected yet.',
+clear:'Clear filters',all:'All',all_subjects:'All subjects',resources:'{n} resources',results_for:'{n} results for “{q}”',
+view:'View',open:'Open',download:'Download',soon:'Link coming soon',save:'Save',saved:'Saved',new:'NEW',
+on_wall:'On the wall',footer:'An independent learning space, built around the belief that knowledge should be accessible to everyone.',
+empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear here soon.',
+saved_h:'Saved resources',saved_sub:'Your saved resources, kept in this browser.',
+saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to keep it here.',
+cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
+bn:{ nav_home:'হোম',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
+hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
+search_ph:'খুঁজুন: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'খুঁজুন',popular:'জনপ্রিয় খোঁজ',subjects:'বিষয়সমূহ',recent:'সম্প্রতি যোগ হয়েছে',
+qbank_h:'প্রশ্ন ব্যাংক',qbank_sub:'CQ, SQ, MCQ, বোর্ড প্রশ্ন আর প্র্যাকটিস সেট। ক্লাস, বিষয়, অধ্যায় আর ধরন দিয়ে ফিল্টার করো।',
+exam_h:'পরীক্ষার রিসোর্স',exam_sub:'মডেল টেস্ট, রিভিশন শিট, সাজেশন আর আগের বছরের প্রশ্ন।',
+extra_h:'অতিরিক্ত রিসোর্স',extra_sub:'আরও এগিয়ে যাওয়ার জন্য বই, স্লাইড, ভিডিও আর দরকারি ওয়েবসাইট।',
+wall_h:'দেয়ালের কথা',wall_sub:'মনে রাখার মতো কথা। ভাবার মতো প্রশ্ন। সাথে নেওয়ার মতো শব্দ।',
+class_sub:'নোট, ওয়ার্কশিট, প্রশ্নসহ আরও অনেক কিছু — অধ্যায় অনুযায়ী সাজানো।',
+search_h:'খুঁজুন',search_empty_t:'BEYOND খুঁজুন',search_empty_m:'শুরু করতে একটি বিষয়, অধ্যায় বা প্রশ্নের ধরন লেখো।',
+no_results_t:'কোনো ফলাফল নেই',no_results_m:'ছোট শব্দ লিখে দেখো, বানান দেখে নাও, বা ফিল্টার মুছে ফেলো।',
+nothing_t:'এখনো কিছু পাওয়া যায়নি',nothing_m:'অন্য শব্দ লিখে দেখো, বা ফিল্টার মুছে ফেলো।',
+no_res_t:'এখনো কোনো রিসোর্স নেই',no_res_m:'নতুন কিছু যোগ হলেই এখানে দেখা যাবে।',
+load_err_t:'রিসোর্স লোড করা যায়নি',load_err_m:'ইন্টারনেট সংযোগ দেখে',retry:'আবার চেষ্টা করো',
+setup_t:'প্রায় প্রস্তুত',setup_m:'রিসোর্সের তালিকা এখনো যুক্ত করা হয়নি।',
+clear:'ফিল্টার মুছুন',all:'সবগুলো',all_subjects:'সব বিষয়',resources:'{n} টি রিসোর্স',results_for:'“{q}” এর জন্য {n} টি ফলাফল',
+view:'দেখুন',open:'খুলুন',download:'ডাউনলোড',soon:'লিংক শীঘ্রই আসছে',save:'সেভ করুন',saved:'সেভ করা',new:'নতুন',
+on_wall:'দেয়ালে',footer:'একটি স্বাধীন শেখার জায়গা — জ্ঞান সবার জন্য সহজলভ্য হওয়া উচিত, এই বিশ্বাস থেকে তৈরি।',
+empty_wall_t:'দেয়াল এখন শান্ত',empty_wall_m:'নতুন কথা এলে এখানে দেখা যাবে।',
+saved_h:'সেভ করা রিসোর্স',saved_sub:'তোমার সেভ করা রিসোর্সগুলো, এই ব্রাউজারে রাখা আছে।',
+saved_empty_t:'এখনো কিছু সেভ করোনি',saved_empty_m:'যেকোনো রিসোর্সে Save চাপলেই সেটা এখানে থাকবে।',
+cls:'ক্লাস',subject:'বিষয়',chapter:'অধ্যায়',type:'ধরন' }
+};
+const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
+const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en' };
+const t = (k,v) => { let s=(STR[state.lang]&&STR[state.lang][k])||STR.en[k]||k; if(v) for(const key in v) s=s.split('{'+key+'}').join(v[key]); return s; };
+const num = n => state.lang==='bn' ? String(n).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d]) : String(n);
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- bookmarks (saved in this browser) ---------- */
+const savedIds = () => { try{ const v=JSON.parse(store.get('beyond-saved')||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; } };
+const isSaved = id => savedIds().indexOf(id)>=0;
+function toggleSave(id){ const s=savedIds(); const i=s.indexOf(id); if(i>=0) s.splice(i,1); else s.push(id); store.set('beyond-saved',JSON.stringify(s)); render(); }
 
 /* ---------- data ---------- */
 function parseCSV(t){
@@ -64,14 +119,14 @@ function pd(s){
   if(!s) return 0; s=s.trim();
   let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if(m) return Date.UTC(+m[1],m[2]-1,+m[3]);
   m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/); if(m) return Date.UTC(+m[3],m[2]-1,+m[1]);
-  const t=Date.parse(s); return isNaN(t)?0:t;
+  const t2=Date.parse(s); return isNaN(t2)?0:t2;
 }
-const fmt = t => t ? new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}) : '';
+const fmt = d => d ? new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}) : '';
 function subjectGroup(raw){
-  const t=String(raw||'').trim().toLowerCase(), k=t.replace(/[^a-z]/g,'');
+  const t2=String(raw||'').trim().toLowerCase(), k=t2.replace(/[^a-z]/g,'');
   for(const s of SUBJECTS){
     const names=[s.toLowerCase(),...(SUB_ALIAS[s]||[])];
-    if(names.some(n=>/^[a-z]+$/.test(n)?k.startsWith(n):t.startsWith(n))) return s;
+    if(names.some(n=>/^[a-z]+$/.test(n)?k.startsWith(n):t2.startsWith(n))) return s;
   }
   return OTHER;
 }
@@ -106,83 +161,94 @@ function links(url){
 }
 
 /* ---------- pieces ---------- */
-const empty = (t='Nothing found yet',m='Try another word, or clear the filters.') => `<div class="empty"><strong>${t}</strong>${m}</div>`;
+const subSlug = s => (String(s||'Others').toLowerCase().replace(/[^a-z]/g,'') || 'others');
+const isNew = r => !!r.date && r.date <= Date.now()+864e5 && Date.now()-r.date <= NEW_DAYS*864e5;
+const empty = (tt,mm) => `<div class="empty"><strong>${tt}</strong>${mm}</div>`;
 const skeleton = n => `<div class="grid">${'<div class="sk"></div>'.repeat(n)}</div>`;
 function card(r){
   const l=links(r.url);
-  const ch=r.chapter?(/^\d+$/.test(r.chapter)?'Chapter '+r.chapter:r.chapter):'';
-  const meta=[r.cls?'Class '+r.cls:'',r.subject,ch].filter(Boolean).join(' · ');
-  const open = l.view ? `<a class="btn" href="${esc(l.view)}" target="_blank" rel="noopener noreferrer">${l.dl?'View':'Open'}</a>` : '<span class="soon">Link coming soon</span>';
-  const dl = l.dl ? `<a class="btn ghost" href="${esc(l.dl)}" target="_blank" rel="noopener noreferrer">Download</a>` : '';
-  return `<article class="card"><div class="row"><span class="badge">${esc(r.type||r.cat||'Resource')}</span><time>${fmt(r.date)}</time></div>
-  <h3>${esc(r.title)}</h3><p class="meta">${esc(meta)}</p>${r.desc?`<p class="desc">${esc(r.desc)}</p>`:''}<div class="actions">${open}${dl}</div></article>`;
+  const ch=r.chapter?(/^\d+$/.test(r.chapter)?t('chapter')+' '+num(r.chapter):r.chapter):'';
+  const meta=[r.cls?t('cls')+' '+num(r.cls):'',r.subject,ch].filter(Boolean).join(' · ');
+  const open = l.view ? `<a class="btn" href="${esc(l.view)}" target="_blank" rel="noopener noreferrer">${l.dl?t('view'):t('open')}</a>` : '<span class="soon">'+t('soon')+'</span>';
+  const dl = l.dl ? `<a class="btn ghost" href="${esc(l.dl)}" target="_blank" rel="noopener noreferrer">${t('download')}</a>` : '';
+  const sv = `<button type="button" class="btn ghost save${isSaved(r.id)?' on':''}" data-save="${esc(r.id)}" aria-pressed="${isSaved(r.id)}">${isSaved(r.id)?'★ '+t('saved'):'☆ '+t('save')}</button>`;
+  return `<article class="card"><div class="row"><span class="badges"><span class="badge sb-${subSlug(r.grp)}">${esc(r.type||r.cat||'Resource')}</span>${isNew(r)?`<span class="new">${t('new')}</span>`:''}</span><time>${fmt(r.date)}</time></div>
+  <h3>${esc(r.title)}</h3><p class="meta">${esc(meta)}</p>${r.desc?`<p class="desc">${esc(r.desc)}</p>`:''}<div class="actions">${open}${dl}${sv}</div></article>`;
 }
 function wallCard(w){
   return `<article class="wc${w.feat?' feat':''}"><span class="cat">${esc(w.cat)}</span><h3>${esc(w.title)}</h3><p>${esc(w.content).replace(/\n/g,'<br>')}</p>${w.date?`<time>${fmt(w.date)}</time>`:''}</article>`;
 }
+/* Empty values are dropped, so a blank chapter can no longer add a second "All" option. */
 const uniq = (items,k) => [...new Set(items.map(r=>r[k]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));
 function bar(v,items,fields,f){
-  const sel=fields.map(k=>`<label>${LABELS[k]}<select data-v="${v}" data-k="${k}"><option value="">All</option>${uniq(items,k).map(o=>`<option${f[k]===String(o)?' selected':''} value="${esc(o)}">${esc(k==='cls'?'Class '+o:o)}</option>`).join('')}</select></label>`).join('');
-  return `<div class="filters">${sel}<button class="link" data-clear="${v}">Clear filters</button></div>`;
+  const sel=fields.map(k=>`<label>${t(k)}<select data-v="${v}" data-k="${k}"><option value="">${t('all')}</option>${uniq(items,k).map(o=>`<option${f[k]===String(o)?' selected':''} value="${esc(o)}">${esc(k==='cls'?t('cls')+' '+num(o):k==='chapter'?num(o):o)}</option>`).join('')}</select></label>`).join('');
+  return `<div class="filters">${sel}<button class="link" data-clear="${v}">${t('clear')}</button></div>`;
 }
 function listView(v,items,fields,head,sub,pre=''){
   const f=state.f[v]||(state.f[v]={});
   const shown=items.filter(r=>fields.every(k=>!f[k]||String(r[k])===f[k]));
   return `<section class="wrap"><h1>${head}</h1><p class="sub">${sub}</p>${pre}${bar(v,items,fields,f)}
-  <p class="count">${shown.length} resource${shown.length===1?'':'s'}</p>${shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:empty()}</section>`;
+  <p class="count">${t('resources',{n:shown.length})}</p>${shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:empty(t('nothing_t'),t('nothing_m'))}</section>`;
 }
-const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type="search" name="q" value="${esc(state.q)}" placeholder="Try: Chemical Bond, Digestion, Chapter 5, CQ" aria-label="Search BEYOND" autocomplete="off"><button type="submit">Search</button></form>`;
+const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type="search" name="q" value="${esc(state.q)}" placeholder="${esc(t('search_ph'))}" aria-label="Search BEYOND" autocomplete="off"><button type="submit">${t('search_btn')}</button></form>`;
 
 /* ---------- views ---------- */
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class9','Class 9'],['class10','Class 10'],['qbank','Question Bank'],['exam','Exam Resources'],['extra','Extra Resources']];
-    const cls=n=>`<div class="cls"><h3>Class ${n}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc" data-go="class${n}" data-sub="${s}"><small>Class ${n}</small>${s}</button>`).join('')}</div></div>`;
-    return `<section class="hero"><div class="in"><h1>Welcome to BEYOND</h1><h2>More than books. More than grades. More than yesterday.</h2>
-    <p>A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.</p>${sform()}</div></section>
-    <section class="wrap"><div class="quick">${quick.map(([h,t])=>`<a class="qa" href="#${h}">${t}</a>`).join('')}</div>
-    <h2>Subjects</h2>${cls(9)}${cls(10)}
-    <div class="sec"><h2>Recently added</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty('No resources yet','New materials will appear here as soon as they are added.'),CONFIG.RECENT)}</section>`;
+    const quick=[['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra']];
+    const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
+    const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
+    return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
+    <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
+    <section class="wrap"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
+    <h2>${t('subjects')}</h2>${cls(9)}${cls(10)}
+    <div class="sec"><h2>${t('recent')}</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty(t('no_res_t'),t('no_res_m')),CONFIG.RECENT)}</section>`;
   },
   classView(n){
     const v='class'+n, f=state.f[v]||(state.f[v]={});
     const all=state.res.filter(r=>r.cls===String(n)&&kind(r)==='class');
     const items=all.filter(r=>!f.subject||r.grp===f.subject);
-    const chips=`<div class="chips">${['',...ALL_SUBJECTS].map(s=>`<button class="chip${(f.subject||'')===s?' on':''}" data-chip="${v}" data-sub="${s}">${s||'All subjects'}</button>`).join('')}</div>`;
-    return listView(v,items,['chapter','type'],`Class ${n}`,'Notes, worksheets, questions and more, organised chapter by chapter.',chips);
+    const chips=`<div class="chips">${['',...ALL_SUBJECTS].map(s=>`<button class="chip sb-${subSlug(s)}${(f.subject||'')===s?' on':''}" data-chip="${v}" data-sub="${s}">${s||t('all_subjects')}</button>`).join('')}</div>`;
+    return listView(v,items,['chapter','type'],t('cls')+' '+num(n),t('class_sub'),chips);
   },
-  qbank(){ return listView('qbank',state.res.filter(r=>kind(r)==='qbank'),['cls','subject','chapter','type'],'Question Bank','CQ, SQ, MCQ, board questions and practice sets. Filter by class, subject, chapter and type.'); },
-  exam(){ return listView('exam',state.res.filter(r=>kind(r)==='exam'),['cls','subject','type'],'Exam Resources','Model tests, revision sheets, suggestions and previous papers.'); },
-  extra(){ return listView('extra',state.res.filter(r=>kind(r)==='extra'),['type'],'Extra Resources','Books, slides, videos and useful websites for going further.'); },
+  qbank(){ return listView('qbank',state.res.filter(r=>kind(r)==='qbank'),['cls','subject','chapter','type'],t('qbank_h'),t('qbank_sub')); },
+  exam(){ return listView('exam',state.res.filter(r=>kind(r)==='exam'),['cls','subject','type'],t('exam_h'),t('exam_sub')); },
+  extra(){ return listView('extra',state.res.filter(r=>kind(r)==='extra'),['type'],t('extra_h'),t('extra_sub')); },
   wall(){
     const f=state.f.wall||(state.f.wall={});
     const items=state.wall.filter(w=>!f.cat||w.cat===f.cat);
     const sorted=[...items.filter(w=>w.feat),...items.filter(w=>!w.feat)];
-    const chips=`<div class="chips">${['',...WALL_CATS].map(c=>`<button class="chip${(f.cat||'')===c?' on':''}" data-wcat="${esc(c)}">${esc(c||'All')}</button>`).join('')}</div>`;
-    return `<section class="wrap"><h1>WORDS ON THE WALL</h1><p class="sub">Thoughts to remember. Questions to consider. Words to carry.</p>${chips}
-    ${body(sorted.length?`<div class="wall">${sorted.map(wallCard).join('')}</div>`:empty('The wall is quiet for now','New words will appear here soon.'),2)}</section>`;
+    const chips=`<div class="chips">${['',...WALL_CATS].map(c=>`<button class="chip${(f.cat||'')===c?' on':''}" data-wcat="${esc(c)}">${esc(c||t('all'))}</button>`).join('')}</div>`;
+    return `<section class="wrap"><h1>${t('wall_h')}</h1><p class="sub">${t('wall_sub')}</p>${chips}
+    ${body(sorted.length?`<div class="wall">${sorted.map(wallCard).join('')}</div>`:empty(t('empty_wall_t'),t('empty_wall_m')),2)}</section>`;
+  },
+  saved(){
+    const ids=savedIds();
+    const items=state.res.filter(r=>ids.indexOf(r.id)>=0);
+    return `<section class="wrap"><h1>${t('saved_h')}</h1><p class="sub">${t('saved_sub')}</p>
+    <p class="count">${t('resources',{n:items.length})}</p>${body(items.length?`<div class="grid">${items.map(card).join('')}</div>`:empty(t('saved_empty_t'),t('saved_empty_m')),3)}</section>`;
   },
   search(){
     const f=state.f.search||(state.f.search={});
     const toks=state.q.toLowerCase().split(/\s+/).filter(Boolean);
     const hay=r=>[r.title,r.kw,r.subject,r.grp,r.chapter,r.chapter&&'chapter '+r.chapter,r.desc,r.cat,r.type,r.cls&&'class '+r.cls].join(' ').toLowerCase();
-    const hits=toks.length?state.res.filter(r=>{const h=hay(r);return toks.every(t=>h.includes(t));}):[];
+    const hits=toks.length?state.res.filter(r=>{const h=hay(r);return toks.every(tok=>h.includes(tok));}):[];
     const shown=hits.filter(r=>['cls','subject','chapter','type'].every(k=>!f[k]||String(r[k])===f[k]));
     const hasF=Object.values(f).some(Boolean);
-    const wh=toks.length&&!hasF?state.wall.filter(w=>{const h=[w.title,w.content,w.cat].join(' ').toLowerCase();return toks.every(t=>h.includes(t));}):[];
+    const wh=toks.length&&!hasF?state.wall.filter(w=>{const h=[w.title,w.content,w.cat].join(' ').toLowerCase();return toks.every(tok=>h.includes(tok));}):[];
     let out;
-    if(!toks.length) out=empty('Search BEYOND','Type a topic, chapter or question type to begin.');
-    else if(!shown.length&&!wh.length) out=empty('No results','Try a shorter word, check the spelling, or clear the filters.');
-    else out=(shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:'')+(wh.length?`<div class="sec"><h2>On the wall</h2></div><div class="wall">${wh.map(wallCard).join('')}</div>`:'');
-    return `<section class="wrap"><h1>Search</h1>${sform('plain')}${toks.length?bar('search',hits,['cls','subject','chapter','type'],f)+`<p class="count">${shown.length+wh.length} result${shown.length+wh.length===1?'':'s'} for “${esc(state.q)}”</p>`:''}${body(out,3)}</section>`;
+    if(!toks.length) out=empty(t('search_empty_t'),t('search_empty_m'));
+    else if(!shown.length&&!wh.length) out=empty(t('no_results_t'),t('no_results_m'));
+    else out=(shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:'')+(wh.length?`<div class="sec"><h2>${t('on_wall')}</h2></div><div class="wall">${wh.map(wallCard).join('')}</div>`:'');
+    return `<section class="wrap"><h1>${t('search_h')}</h1>${sform('plain')}${toks.length?bar('search',hits,['cls','subject','chapter','type'],f)+`<p class="count">${t('results_for',{n:shown.length+wh.length,q:state.q})}</p>`:''}${body(out,3)}</section>`;
   }
 };
 /* loading / error / setup wrapper */
 function body(html,n){
   if(state.status==='loading') return skeleton(n||3);
-  if(state.status==='setup') return `<div class="empty"><strong>Almost ready</strong>The resource list has not been connected yet.</div>`;
-  if(state.status==='error') return `<div class="err"><strong>Could not load resources</strong>Check your internet connection, then <button class="link" data-retry>try again</button>.</div>`;
+  if(state.status==='setup') return `<div class="empty"><strong>${t('setup_t')}</strong>${t('setup_m')}</div>`;
+  if(state.status==='error') return `<div class="err"><strong>${t('load_err_t')}</strong>${t('load_err_m')} <button class="link" data-retry>${t('retry')}</button>${state.lang==='bn'?'।':'.'}</div>`;
   return html;
 }
 
@@ -190,17 +256,21 @@ function body(html,n){
 function render(){
   const h=(location.hash||'#home').slice(1);
   const name=V[h]?h:/^class(9|10)$/.test(h)?h:'home';
-  const labels=Object.fromEntries(NAV);
+  const labels=Object.fromEntries(NAV.map(([k,key])=>[k,t(key)]));
   let html;
   if(name==='home') html=V.home();
-  else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||'Search')}</h1>${body('',3)}</section>`;
+  else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||t('nav_search'))}</h1>${body('',3)}</section>`;
   else if(name.startsWith('class')) html=V.classView(name.slice(5));
   else html=V[name]();
   const app=$('#app');
   app.className=name==='wall'?'wallpg':'';
   app.innerHTML=html;
   document.title=(labels[name]&&name!=='home'?labels[name]+' – ':'')+'BEYOND – Learn. Think. Grow.';
-  $('#menu').innerHTML=NAV.map(([k,t])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t}</a>`).join('');
+  document.documentElement.lang=state.lang==='bn'?'bn':'en';
+  $('#menu').innerHTML=NAV.map(([k,key])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`).join('');
+  $('#bnav').innerHTML=BNAV.map(([k,key])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`).join('');
+  const lb=$('#langbtn'); if(lb) lb.textContent=state.lang==='bn'?'EN':'বাংলা';
+  const ft=$('#foot'); if(ft) ft.textContent=t('footer');
   setMenu(false);
 }
 let lastView='';
@@ -209,15 +279,18 @@ function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){
 /* ---------- events ---------- */
 function setMenu(o){ document.body.classList.toggle('open',o); $('#burger').setAttribute('aria-expanded',o); $('#burger').setAttribute('aria-label',o?'Close menu':'Open menu'); }
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],#burger,#scrim,#menu a');
-  if(!t) return;
-  if(t.id==='burger') return setMenu(!document.body.classList.contains('open'));
-  if(t.id==='scrim'||t.closest('#menu')) return setMenu(false);
-  if(t.hasAttribute('data-retry')) return load();
-  if(t.dataset.go){ (state.f[t.dataset.go]=state.f[t.dataset.go]||{}).subject=t.dataset.sub||''; state.f[t.dataset.go].chapter=''; state.f[t.dataset.go].type=''; if(location.hash==='#'+t.dataset.go) render(); else location.hash=t.dataset.go; return; }
-  if(t.dataset.chip!==undefined){ const f=state.f[t.dataset.chip]=state.f[t.dataset.chip]||{}; f.subject=t.dataset.sub; f.chapter=''; return render(); }
-  if(t.dataset.wcat!==undefined){ (state.f.wall=state.f.wall||{}).cat=t.dataset.wcat; return render(); }
-  if(t.dataset.clear){ const f=state.f[t.dataset.clear]=state.f[t.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(t.dataset.clear!=='class9'&&t.dataset.clear!=='class10') f.subject=''; return render(); }
+  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],#burger,#scrim,#menu a,#langbtn');
+  if(!el) return;
+  if(el.id==='burger') return setMenu(!document.body.classList.contains('open'));
+  if(el.id==='langbtn'){ state.lang=state.lang==='bn'?'en':'bn'; store.set('beyond-lang',state.lang); return render(); }
+  if(el.id==='scrim'||el.closest('#menu')) return setMenu(false);
+  if(el.hasAttribute('data-retry')) return load();
+  if(el.dataset.q!==undefined){ state.q=el.dataset.q; state.f.search={}; if(location.hash==='#search') render(); else location.hash='search'; return; }
+  if(el.dataset.save!==undefined){ toggleSave(el.dataset.save); return; }
+  if(el.dataset.go){ (state.f[el.dataset.go]=state.f[el.dataset.go]||{}).subject=el.dataset.sub||''; state.f[el.dataset.go].chapter=''; state.f[el.dataset.go].type=''; if(location.hash==='#'+el.dataset.go) render(); else location.hash=el.dataset.go; return; }
+  if(el.dataset.chip!==undefined){ const f=state.f[el.dataset.chip]=state.f[el.dataset.chip]||{}; f.subject=el.dataset.sub; f.chapter=''; return render(); }
+  if(el.dataset.wcat!==undefined){ (state.f.wall=state.f.wall||{}).cat=el.dataset.wcat; return render(); }
+  if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
 });
 document.addEventListener('change',e=>{
   const s=e.target.closest('select[data-k]'); if(!s) return;
