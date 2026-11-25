@@ -4,8 +4,8 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
-const BNAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
+const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
 const SUBJECTS = ['Bangla','English','Math','Science','Biology','Chemistry'];
@@ -18,7 +18,7 @@ const POP = ['Acid','Tag Questions','Suggestion','Chapter 5','MCQ','Practical'];
 const NEW_DAYS = 7;
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
-en:{ nav_home:'Home',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
+en:{ nav_home:'Home',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
 hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
 nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',
 ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
@@ -42,7 +42,7 @@ empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear her
 saved_h:'Saved resources',saved_sub:'Your saved resources, kept in this browser.',
 saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to keep it here.',
 cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
-bn:{ nav_home:'হোম',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
+bn:{ nav_home:'হোম',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
 hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
 nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',
 ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
@@ -139,7 +139,7 @@ function subjectGroup(raw){
   return OTHER;
 }
 function mapRes(o){
-  const cm=(o.class||'').match(/\b(9|10)\b/);
+  const cm=(o.class||'').match(/\b(8|9|10)\b/);
   const sub=SUBJECTS.find(s=>s.toLowerCase()===(o.subject||'').toLowerCase())||o.subject;
   return { id:o.id, title:o.title, cls:cm?cm[1]:'', subject:sub, grp:subjectGroup(o.subject), chapter:o.chapter, cat:o.category, type:o.resourcetype,
     desc:o.description, kw:o.keywords, url:o.fileurl, date:pd(o.uploaddate), feat:yes(o.featured), on:isOn(o.visibility) };
@@ -204,13 +204,13 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
     <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
     <section class="wrap"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
-    <h2>${t('subjects')}</h2>${cls(9)}${cls(10)}
+    <h2>${t('subjects')}</h2>${cls(8)}${cls(9)}${cls(10)}
     <div class="sec"><h2>${t('recent')}</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty(t('no_res_t'),t('no_res_m')),CONFIG.RECENT)}</section>`;
   },
   classView(n){
@@ -285,7 +285,7 @@ function body(html,n){
 /* ---------- router ---------- */
 function render(){
   const h=(location.hash||'#home').slice(1);
-  const name=V[h]?h:/^class(9|10)$/.test(h)?h:'home';
+  const name=V[h]?h:/^class(8|9|10)$/.test(h)?h:'home';
   const labels=Object.fromEntries(NAV.map(([k,key])=>[k,t(key)]));
   let html;
   if(name==='home') html=V.home();
@@ -302,7 +302,7 @@ function render(){
     let s=`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`;
     /* Chapter links under Class 9 / Class 10, so students can jump straight
        to a chapter from the menu (mobile). "All" is not a chapter. */
-    if(k==='class9'||k==='class10'){
+    if(k==='class8'||k==='class9'||k==='class10'){
       const n=k.slice(5);
       const skip=c=>['all','n/a','na','-'].includes(String(c).toLowerCase());
       const chs=uniq(state.res.filter(r=>r.cls===n),'chapter').filter(c=>c&&!skip(c));
@@ -339,7 +339,7 @@ document.addEventListener('click',e=>{
   if(el.dataset.go){ (state.f[el.dataset.go]=state.f[el.dataset.go]||{}).subject=el.dataset.sub||''; state.f[el.dataset.go].chapter=''; state.f[el.dataset.go].type=''; if(location.hash==='#'+el.dataset.go) render(); else location.hash=el.dataset.go; return; }
   if(el.dataset.chip!==undefined){ const f=state.f[el.dataset.chip]=state.f[el.dataset.chip]||{}; f.subject=el.dataset.sub; f.chapter=''; return render(); }
   if(el.dataset.wcat!==undefined){ (state.f.wall=state.f.wall||{}).cat=el.dataset.wcat; return render(); }
-  if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
+  if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class8'&&el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
 });
 document.addEventListener('change',e=>{
   const s=e.target.closest('select[data-k]'); if(!s) return;
