@@ -239,17 +239,19 @@ const V = {
      Netlify Forms was tried first but Netlify never registered the form. */
   ask(){
     const subs=ALL_SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('');
+    const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/formResponse';
     return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
-    <form class="askform" id="askform" name="ask-teacher" method="POST">
-      <label>${t('ask_name')}<input type="text" name="name" placeholder="${esc(t('ask_name_ph'))}" autocomplete="name"></label>
+    <form class="askform" id="askform" name="ask-teacher" method="POST" action="${GF}" target="askframe">
+      <label>${t('ask_name')}<input type="text" name="entry.1924161484" placeholder="${esc(t('ask_name_ph'))}" autocomplete="name"></label>
       <div class="two">
-        <label>${t('ask_class')}<select name="class" required><option value="">—</option><option value="9">${t('cls')} ${num(9)}</option><option value="10">${t('cls')} ${num(10)}</option></select></label>
-        <label>${t('ask_subject')}<select name="subject" required><option value="">—</option>${subs}</select></label>
+        <label>${t('ask_class')}<select name="entry.1393161409" required><option value="">—</option><option value="Class 9">${t('cls')} ${num(9)}</option><option value="Class 10">${t('cls')} ${num(10)}</option></select></label>
+        <label>${t('ask_subject')}<select name="entry.577272564" required><option value="">—</option>${subs}</select></label>
       </div>
-      <label>${t('ask_q')}<textarea name="question" rows="5" required placeholder="${esc(t('ask_q_ph'))}"></textarea></label>
+      <label>${t('ask_q')}<textarea name="entry.150238284" rows="5" required placeholder="${esc(t('ask_q_ph'))}"></textarea></label>
+      <input type="hidden" name="fvv" value="1"><input type="hidden" name="pageHistory" value="0"><input type="hidden" name="draftResponse" value="[]"><input type="hidden" name="submit" value="Submit">
       <button type="submit" class="btn">${t('ask_send')}</button>
       <p class="askmsg" id="askmsg" role="status"></p>
-    </form></section>`;
+    </form><iframe name="askframe" id="askframe" style="display:none" title="ask"></iframe></section>`;
   },
   saved(){
     const ids=savedIds();
@@ -343,33 +345,33 @@ document.addEventListener('change',e=>{
   const s=e.target.closest('select[data-k]'); if(!s) return;
   (state.f[s.dataset.v]=state.f[s.dataset.v]||{})[s.dataset.k]=s.value; render();
 });
+/* Ask form: real browser navigation POST into a hidden iframe.
+   A fetch no-cors post never landed in the form's Responses (Google
+   silently drops non-navigation posts), while a direct form submit
+   does land — so the form posts natively and we show success when
+   the hidden iframe finishes loading Google's reply. */
+let askSent=false, askTimer=null;
+document.addEventListener('load',e=>{
+  if(e.target && e.target.id==='askframe' && askSent){
+    askSent=false; if(askTimer){ clearTimeout(askTimer); askTimer=null; }
+    const form=$('#askform'), msg=$('#askmsg');
+    if(form){ form.reset(); const b=form.querySelector('button[type="submit"]'); if(b) b.disabled=false; }
+    if(msg){ msg.className='askmsg ok'; msg.textContent=t('ask_ok_t')+' '+t('ask_ok_m'); }
+  }
+},true);
 document.addEventListener('submit',e=>{
   if(e.target.id==='askform'){
-    e.preventDefault();
     const form=e.target, msg=$('#askmsg');
-    const send=async()=>{
-      /* Google Form endpoint (entry IDs from the form's public HTML).
-         Cross-origin post, so no-cors: the response is opaque and a
-         resolved fetch (no network error) means it was accepted. */
-      const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/formResponse';
-      const fd=new FormData(form);
-      const cls=fd.get('class');
-      const body=new URLSearchParams();
-      body.set('entry.1924161484',fd.get('name')||'');
-      body.set('entry.1393161409',cls?('Class '+cls):'');
-      body.set('entry.577272564',fd.get('subject')||'');
-      body.set('entry.150238284',fd.get('question')||'');
-      body.set('fvv','1');body.set('pageHistory','0');
-      await fetch(GF,{method:'POST',mode:'no-cors',body});
-    };
+    askSent=true;
     if(msg) msg.textContent='';
     form.querySelector('button[type="submit"]').disabled=true;
-    send().then(()=>{
-      form.reset();
-      if(msg){ msg.className='askmsg ok'; msg.textContent=t('ask_ok_t')+' '+t('ask_ok_m'); }
-    }).catch(()=>{
+    askTimer=setTimeout(()=>{
+      if(!askSent) return;
+      askSent=false;
       if(msg){ msg.className='askmsg err'; msg.textContent=t('ask_err'); }
-    }).finally(()=>{ form.querySelector('button[type="submit"]').disabled=false; });
+      form.querySelector('button[type="submit"]').disabled=false;
+    },12000);
+    /* no preventDefault: the browser posts the form into #askframe */
     return;
   }
   if(!e.target.classList.contains('sform')) return;
