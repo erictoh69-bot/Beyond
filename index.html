@@ -26,6 +26,15 @@
 </header>
 <div class="scrim" id="scrim"></div>
 <main id="app" tabindex="-1"></main>
+<!-- Hidden copy of the Ask Your Teacher form, so Netlify detects it at deploy time.
+     The visible form is rendered by script.js; both share the name "ask-teacher". -->
+<form name="ask-teacher" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="display:none">
+  <input type="text" name="name">
+  <select name="class"><option value="9">9</option><option value="10">10</option></select>
+  <select name="subject"><option value="Bangla">Bangla</option><option value="English">English</option><option value="Math">Math</option><option value="Science">Science</option><option value="Biology">Biology</option><option value="Chemistry">Chemistry</option><option value="Others">Others</option></select>
+  <textarea name="question"></textarea>
+  <input type="text" name="bot-field">
+</form>
 <footer class="foot"><p id="foot">An independent learning space, built around the belief that knowledge should be accessible to everyone.</p></footer>
 <nav class="bnav" id="bnav" aria-label="Quick"></nav>
 <script src="script.js"></script>

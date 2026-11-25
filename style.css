@@ -27,6 +27,8 @@ h1,h2,h3{color:var(--navy);line-height:1.25;margin:0 0 .4em;font-weight:800;lett
 #menu{position:fixed;top:0;right:0;bottom:0;width:min(290px,82vw);background:var(--navy);padding:72px 12px 20px;transform:translateX(100%);transition:transform .25s;overflow-y:auto;z-index:40;display:flex;flex-direction:column;gap:2px}
 .open #menu{transform:none}
 #menu a{color:#fff;text-decoration:none;padding:14px 16px;border-radius:10px;font-weight:600;min-height:48px}
+#menu a.sub{padding:8px 16px 8px 30px;font-size:.9rem;font-weight:500;color:#C9D7E6;min-height:40px}
+#menu a.sub::before{content:'› ';color:var(--cyan)}
 #menu a.on{background:var(--navy2);box-shadow:inset 3px 0 var(--cyan)}
 .scrim{position:fixed;inset:0;background:rgba(11,31,58,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:35}
 .open .scrim{opacity:1;pointer-events:auto}
@@ -152,6 +154,20 @@ time{color:var(--muted);font-size:.8rem}
 .sc.sb-math{border-left-color:#E67E22}
 .sc.sb-science{border-left-color:#0E9594}
 .sc.sb-others{border-left-color:#5B6B7C}
+
+/* ask your teacher (Netlify Forms) */
+.wrap.narrow{max-width:640px}
+.askform{display:grid;gap:16px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px 20px}
+.askform label{display:grid;gap:6px;font-weight:600;font-size:.92rem}
+.askform .two{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+@media(max-width:520px){.askform .two{grid-template-columns:1fr}}
+.askform input[type="text"],.askform select,.askform textarea{font:inherit;color:var(--text);padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.askform textarea{resize:vertical;min-height:120px}
+.askform .hp{display:none}
+.askform .btn{justify-self:start}
+.askmsg{margin:0;font-size:.92rem}
+.askmsg.ok{color:#1E7A44;font-weight:600}
+.askmsg.err{color:#B3261E;font-weight:600}
 
 /* save (bookmark) button */
 button.btn{font:inherit;cursor:pointer}

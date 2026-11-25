@@ -4,7 +4,7 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['wall','nav_wall'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
 const BNAV = [['home','nav_home'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
@@ -20,6 +20,9 @@ const NEW_DAYS = 7;
 const STR = {
 en:{ nav_home:'Home',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
 hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
+nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',
+ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
+ask_ok_t:'Question sent!',ask_ok_m:'Thank you — your teacher will read it and answer soon.',ask_err:'Could not send. Check your connection and try again.',
 search_ph:'Try: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'Search',popular:'Popular searches',subjects:'Subjects',recent:'Recently added',
 qbank_h:'Question Bank',qbank_sub:'CQ, SQ, MCQ, board questions and practice sets. Filter by class, subject, chapter and type.',
 exam_h:'Exam Resources',exam_sub:'Model tests, revision sheets, suggestions and previous papers.',
@@ -41,6 +44,9 @@ saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to kee
 cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
 bn:{ nav_home:'হোম',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
 hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
+nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',
+ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
+ask_ok_t:'প্রশ্ন পাঠানো হয়েছে!',ask_ok_m:'ধন্যবাদ — তোমার শিক্ষক পড়বেন আর শীঘ্রই উত্তর দেবেন।',ask_err:'পাঠানো যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করো।',
 search_ph:'খুঁজুন: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'খুঁজুন',popular:'জনপ্রিয় খোঁজ',subjects:'বিষয়সমূহ',recent:'সম্প্রতি যোগ হয়েছে',
 qbank_h:'প্রশ্ন ব্যাংক',qbank_sub:'CQ, SQ, MCQ, বোর্ড প্রশ্ন আর প্র্যাকটিস সেট। ক্লাস, বিষয়, অধ্যায় আর ধরন দিয়ে ফিল্টার করো।',
 exam_h:'পরীক্ষার রিসোর্স',exam_sub:'মডেল টেস্ট, রিভিশন শিট, সাজেশন আর আগের বছরের প্রশ্ন।',
@@ -198,7 +204,7 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra']];
+    const quick=[['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
@@ -209,7 +215,10 @@ const V = {
   },
   classView(n){
     const v='class'+n, f=state.f[v]||(state.f[v]={});
-    const all=state.res.filter(r=>r.cls===String(n)&&kind(r)==='class');
+    /* Show every resource of this class here, whatever its category is.
+       (Before, only "Class Resources" were shown, so e.g. the Bangla
+       suggestions — Category "Exam Resources" — never appeared under Bangla.) */
+    const all=state.res.filter(r=>r.cls===String(n));
     const items=all.filter(r=>!f.subject||r.grp===f.subject);
     const chips=`<div class="chips">${['',...ALL_SUBJECTS].map(s=>`<button class="chip sb-${subSlug(s)}${(f.subject||'')===s?' on':''}" data-chip="${v}" data-sub="${s}">${s||t('all_subjects')}</button>`).join('')}</div>`;
     return listView(v,items,['chapter','type'],t('cls')+' '+num(n),t('class_sub'),chips);
@@ -224,6 +233,26 @@ const V = {
     const chips=`<div class="chips">${['',...WALL_CATS].map(c=>`<button class="chip${(f.cat||'')===c?' on':''}" data-wcat="${esc(c)}">${esc(c||t('all'))}</button>`).join('')}</div>`;
     return `<section class="wrap"><h1>${t('wall_h')}</h1><p class="sub">${t('wall_sub')}</p>${chips}
     ${body(sorted.length?`<div class="wall">${sorted.map(wallCard).join('')}</div>`:empty(t('empty_wall_t'),t('empty_wall_m')),2)}</section>`;
+  },
+  /* Ask Your Teacher — Netlify Forms. The form is submitted with fetch so the
+     page never leaves; Netlify stores the submission (Site → Forms) and can
+     email-notify. A hidden copy of the same form lives in index.html so
+     Netlify detects it at deploy time (JS-rendered forms are not detected). */
+  ask(){
+    const subs=ALL_SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('');
+    return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
+    <form class="askform" id="askform" name="ask-teacher" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="ask-teacher">
+      <p class="hp"><label>Don’t fill this out: <input name="bot-field"></label></p>
+      <label>${t('ask_name')}<input type="text" name="name" placeholder="${esc(t('ask_name_ph'))}" autocomplete="name"></label>
+      <div class="two">
+        <label>${t('ask_class')}<select name="class"><option value="">—</option><option value="9">${t('cls')} ${num(9)}</option><option value="10">${t('cls')} ${num(10)}</option></select></label>
+        <label>${t('ask_subject')}<select name="subject"><option value="">—</option>${subs}</select></label>
+      </div>
+      <label>${t('ask_q')}<textarea name="question" rows="5" required placeholder="${esc(t('ask_q_ph'))}"></textarea></label>
+      <button type="submit" class="btn">${t('ask_send')}</button>
+      <p class="askmsg" id="askmsg" role="status"></p>
+    </form></section>`;
   },
   saved(){
     const ids=savedIds();
@@ -261,6 +290,7 @@ function render(){
   const labels=Object.fromEntries(NAV.map(([k,key])=>[k,t(key)]));
   let html;
   if(name==='home') html=V.home();
+  else if(name==='ask') html=V.ask();
   else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||t('nav_search'))}</h1>${body('',3)}</section>`;
   else if(name.startsWith('class')) html=V.classView(name.slice(5));
   else html=V[name]();
@@ -269,7 +299,18 @@ function render(){
   app.innerHTML=html;
   document.title=(labels[name]&&name!=='home'?labels[name]+' – ':'')+'BEYOND – Learn. Think. Grow.';
   document.documentElement.lang=state.lang==='bn'?'bn':'en';
-  $('#menu').innerHTML=NAV.map(([k,key])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`).join('');
+  $('#menu').innerHTML=NAV.map(([k,key])=>{
+    let s=`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`;
+    /* Chapter links under Class 9 / Class 10, so students can jump straight
+       to a chapter from the menu (mobile). "All" is not a chapter. */
+    if(k==='class9'||k==='class10'){
+      const n=k.slice(5);
+      const skip=c=>['all','n/a','na','-'].includes(String(c).toLowerCase());
+      const chs=uniq(state.res.filter(r=>r.cls===n),'chapter').filter(c=>c&&!skip(c));
+      s+=chs.map(c=>`<a class="sub" href="#${k}" data-chapter="${k}" data-ch="${esc(c)}">${esc(c)}</a>`).join('');
+    }
+    return s;
+  }).join('');
   $('#bnav').innerHTML=BNAV.map(([k,key])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`).join('');
   const lb=$('#langbtn'); if(lb) lb.textContent=state.lang==='bn'?'EN':'বাংলা';
   const ft=$('#foot'); if(ft) ft.textContent=t('footer');
@@ -281,10 +322,17 @@ function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){
 /* ---------- events ---------- */
 function setMenu(o){ document.body.classList.toggle('open',o); $('#burger').setAttribute('aria-expanded',o); $('#burger').setAttribute('aria-label',o?'Close menu':'Open menu'); }
 document.addEventListener('click',e=>{
-  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],#burger,#scrim,#menu a,#langbtn');
+  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],[data-chapter],#burger,#scrim,#menu a,#langbtn');
   if(!el) return;
   if(el.id==='burger') return setMenu(!document.body.classList.contains('open'));
   if(el.id==='langbtn'){ state.lang=state.lang==='bn'?'en':'bn'; store.set('beyond-lang',state.lang); return render(); }
+  if(el.dataset.chapter!==undefined){
+    const v=el.dataset.chapter, f=state.f[v]=state.f[v]||{};
+    f.chapter=el.dataset.ch; f.subject=''; f.type='';
+    setMenu(false);
+    if(location.hash==='#'+v) render(); else location.hash=v;
+    return;
+  }
   if(el.id==='scrim'||el.closest('#menu')) return setMenu(false);
   if(el.hasAttribute('data-retry')) return load();
   if(el.dataset.q!==undefined){ state.q=el.dataset.q; state.f.search={}; if(location.hash==='#search') render(); else location.hash='search'; return; }
@@ -299,6 +347,23 @@ document.addEventListener('change',e=>{
   (state.f[s.dataset.v]=state.f[s.dataset.v]||{})[s.dataset.k]=s.value; render();
 });
 document.addEventListener('submit',e=>{
+  if(e.target.id==='askform'){
+    e.preventDefault();
+    const form=e.target, msg=$('#askmsg');
+    const send=async()=>{
+      const res=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+    };
+    if(msg) msg.textContent='';
+    form.querySelector('button[type="submit"]').disabled=true;
+    send().then(()=>{
+      form.reset();
+      if(msg){ msg.className='askmsg ok'; msg.textContent=t('ask_ok_t')+' '+t('ask_ok_m'); }
+    }).catch(()=>{
+      if(msg){ msg.className='askmsg err'; msg.textContent=t('ask_err'); }
+    }).finally(()=>{ form.querySelector('button[type="submit"]').disabled=false; });
+    return;
+  }
   if(!e.target.classList.contains('sform')) return;
   e.preventDefault(); state.q=new FormData(e.target).get('q').trim(); state.f.search={};
   if(location.hash==='#search') render(); else location.hash='search';
