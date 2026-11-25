@@ -234,20 +234,17 @@ const V = {
     return `<section class="wrap"><h1>${t('wall_h')}</h1><p class="sub">${t('wall_sub')}</p>${chips}
     ${body(sorted.length?`<div class="wall">${sorted.map(wallCard).join('')}</div>`:empty(t('empty_wall_t'),t('empty_wall_m')),2)}</section>`;
   },
-  /* Ask Your Teacher — Netlify Forms. The form is submitted with fetch so the
-     page never leaves; Netlify stores the submission (Site → Forms) and can
-     email-notify. A hidden copy of the same form lives in index.html so
-     Netlify detects it at deploy time (JS-rendered forms are not detected). */
+  /* Ask Your Teacher: the form posts straight to a Google Form
+     (formResponse endpoint), so answers land in the form's Responses tab.
+     Netlify Forms was tried first but Netlify never registered the form. */
   ask(){
     const subs=ALL_SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('');
     return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
-    <form class="askform" id="askform" name="ask-teacher" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="ask-teacher">
-      <p class="hp"><label>Don’t fill this out: <input name="bot-field"></label></p>
+    <form class="askform" id="askform" name="ask-teacher" method="POST">
       <label>${t('ask_name')}<input type="text" name="name" placeholder="${esc(t('ask_name_ph'))}" autocomplete="name"></label>
       <div class="two">
-        <label>${t('ask_class')}<select name="class"><option value="">—</option><option value="9">${t('cls')} ${num(9)}</option><option value="10">${t('cls')} ${num(10)}</option></select></label>
-        <label>${t('ask_subject')}<select name="subject"><option value="">—</option>${subs}</select></label>
+        <label>${t('ask_class')}<select name="class" required><option value="">—</option><option value="9">${t('cls')} ${num(9)}</option><option value="10">${t('cls')} ${num(10)}</option></select></label>
+        <label>${t('ask_subject')}<select name="subject" required><option value="">—</option>${subs}</select></label>
       </div>
       <label>${t('ask_q')}<textarea name="question" rows="5" required placeholder="${esc(t('ask_q_ph'))}"></textarea></label>
       <button type="submit" class="btn">${t('ask_send')}</button>
@@ -351,8 +348,19 @@ document.addEventListener('submit',e=>{
     e.preventDefault();
     const form=e.target, msg=$('#askmsg');
     const send=async()=>{
-      const res=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()});
-      if(!res.ok) throw new Error('HTTP '+res.status);
+      /* Google Form endpoint (entry IDs from the form's public HTML).
+         Cross-origin post, so no-cors: the response is opaque and a
+         resolved fetch (no network error) means it was accepted. */
+      const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/formResponse';
+      const fd=new FormData(form);
+      const cls=fd.get('class');
+      const body=new URLSearchParams();
+      body.set('entry.1924161484',fd.get('name')||'');
+      body.set('entry.1393161409',cls?('Class '+cls):'');
+      body.set('entry.577272564',fd.get('subject')||'');
+      body.set('entry.150238284',fd.get('question')||'');
+      body.set('fvv','1');body.set('pageHistory','0');
+      await fetch(GF,{method:'POST',mode:'no-cors',body});
     };
     if(msg) msg.textContent='';
     form.querySelector('button[type="submit"]').disabled=true;
