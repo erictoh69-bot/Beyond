@@ -37,6 +37,9 @@ h1,h2,h3{color:var(--navy);line-height:1.25;margin:0 0 .4em;font-weight:800;lett
   .burger,.scrim{display:none}
   #menu{position:static;transform:none;width:auto;padding:0;flex-direction:row;background:none;overflow:visible}
   #menu a{padding:10px 12px;font-size:.92rem;min-height:0}
+  /* Chapter links live only in the mobile slide-in menu; on desktop the
+     chapter dropdown in each class view handles chapter navigation. */
+  #menu a.sub{display:none}
   .logo{width:170px}
 }
 
