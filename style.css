@@ -184,3 +184,7 @@ button.btn{font:inherit;cursor:pointer}
 .chip.sb-math:not(.on){border-color:#E67E22;color:#C25E10}
 .chip.sb-science:not(.on){border-color:#0E9594;color:#0B7A78}
 .chip.sb-others:not(.on){border-color:#5B6B7C;color:#5B6B7C}
+
+.gform-embed{width:100%;min-height:820px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+.more{margin:16px 0 0}
+.more a{font-weight:700;text-decoration:none}

@@ -4,7 +4,7 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
 const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
@@ -18,7 +18,9 @@ const POP = ['Acid','Tag Questions','Suggestion','Chapter 5','MCQ','Practical'];
 const NEW_DAYS = 7;
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
-en:{ nav_home:'Home',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
+en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
+all_h:'All Files',all_sub:'Every resource in one place — filter by class, subject, chapter or type.',
+sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
 hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
 nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',
 ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
@@ -42,7 +44,9 @@ empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear her
 saved_h:'Saved resources',saved_sub:'Your saved resources, kept in this browser.',
 saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to keep it here.',
 cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
-bn:{ nav_home:'হোম',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
+bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
+all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জায়গায় — ক্লাস, বিষয়, অধ্যায় বা ধরন দিয়ে ফিল্টার করো।',
+sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
 hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
 nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',
 ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
@@ -151,7 +155,7 @@ async function load(){
   if(CONFIG.SHEET_ID.startsWith('PASTE')){ state.status='setup'; render(); return; }
   try{
     const [r,w]=await Promise.all([fetchTab(CONFIG.RES_TAB,CONFIG.RES_GID),fetchTab(CONFIG.WALL_TAB,CONFIG.WALL_GID)]);
-    state.res=r.filter(o=>o.title).map(mapRes).filter(x=>x.on).sort(byDate);
+    state.res=r.filter(o=>o.title).map((o,i)=>({...mapRes(o),_i:i})).filter(x=>x.on).sort((a,b)=>b.date-a.date||b._i-a._i);
     state.wall=w.filter(o=>o.title&&o.content).map(o=>({id:o.id,title:o.title,content:o.content,cat:o.category,date:pd(o.publicationdate||o.uploaddate),feat:yes(o.featured),on:isOn(o.visibility)})).filter(x=>x.on).sort(byDate);
     state.status='ok';
   }catch(e){ console.error(e); state.status='error'; }
@@ -188,14 +192,17 @@ function wallCard(w){
 }
 /* Empty values are dropped, so a blank chapter can no longer add a second "All" option. */
 const uniq = (items,k) => [...new Set(items.map(r=>r[k]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));
-function bar(v,items,fields,f){
+function bar(v,items,fields,f,extra=''){
   const sel=fields.map(k=>`<label>${t(k)}<select data-v="${v}" data-k="${k}"><option value="">${t('all')}</option>${uniq(items,k).map(o=>`<option${f[k]===String(o)?' selected':''} value="${esc(o)}">${esc(k==='cls'?t('cls')+' '+num(o):k==='chapter'?num(o):o)}</option>`).join('')}</select></label>`).join('');
-  return `<div class="filters">${sel}<button class="link" data-clear="${v}">${t('clear')}</button></div>`;
+  return `<div class="filters">${sel}${extra}<button class="link" data-clear="${v}">${t('clear')}</button></div>`;
 }
 function listView(v,items,fields,head,sub,pre=''){
   const f=state.f[v]||(state.f[v]={});
-  const shown=items.filter(r=>fields.every(k=>!f[k]||String(r[k])===f[k]));
-  return `<section class="wrap"><h1>${head}</h1><p class="sub">${sub}</p>${pre}${bar(v,items,fields,f)}
+  let shown=items.filter(r=>fields.every(k=>!f[k]||String(r[k])===f[k]));
+  const sort=f.sort||'new';
+  if(sort==='az') shown=[...shown].sort((a,b)=>String(a.title).localeCompare(String(b.title)));
+  const sortSel=`<label>${t('sort')}<select data-v="${v}" data-sort><option value="new"${sort==='new'?' selected':''}>${t('sort_new')}</option><option value="az"${sort==='az'?' selected':''}>${t('sort_az')}</option></select></label>`;
+  return `<section class="wrap"><h1>${head}</h1><p class="sub">${sub}</p>${pre}${bar(v,items,fields,f,sortSel)}
   <p class="count">${rc(shown.length)}</p>${shown.length?`<div class="grid">${shown.map(card).join('')}</div>`:empty(t('nothing_t'),t('nothing_m'))}</section>`;
 }
 const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type="search" name="q" value="${esc(state.q)}" placeholder="${esc(t('search_ph'))}" aria-label="Search BEYOND" autocomplete="off"><button type="submit">${t('search_btn')}</button></form>`;
@@ -204,14 +211,14 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
     <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
     <section class="wrap"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
     <h2>${t('subjects')}</h2>${cls(8)}${cls(9)}${cls(10)}
-    <div class="sec"><h2>${t('recent')}</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty(t('no_res_t'),t('no_res_m')),CONFIG.RECENT)}</section>`;
+    <div class="sec"><h2>${t('recent')}</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty(t('no_res_t'),t('no_res_m')),CONFIG.RECENT)}<p class="more"><a href="#all">${t('view_all')}</a></p></section>`;
   },
   classView(n){
     const v='class'+n, f=state.f[v]||(state.f[v]={});
@@ -224,6 +231,8 @@ const V = {
     return listView(v,items,['chapter','type'],t('cls')+' '+num(n),t('class_sub'),chips);
   },
   qbank(){ return listView('qbank',state.res.filter(r=>kind(r)==='qbank'),['cls','subject','chapter','type'],t('qbank_h'),t('qbank_sub')); },
+  /* All Files: every resource in one place. */
+  all(){ return listView('all',state.res,['cls','subject','chapter','type'],t('all_h'),t('all_sub')); },
   exam(){ return listView('exam',state.res.filter(r=>kind(r)==='exam'),['cls','subject','type'],t('exam_h'),t('exam_sub')); },
   extra(){ return listView('extra',state.res.filter(r=>kind(r)==='extra'),['type'],t('extra_h'),t('extra_sub')); },
   wall(){
@@ -234,24 +243,17 @@ const V = {
     return `<section class="wrap"><h1>${t('wall_h')}</h1><p class="sub">${t('wall_sub')}</p>${chips}
     ${body(sorted.length?`<div class="wall">${sorted.map(wallCard).join('')}</div>`:empty(t('empty_wall_t'),t('empty_wall_m')),2)}</section>`;
   },
-  /* Ask Your Teacher: the form posts straight to a Google Form
-     (formResponse endpoint), so answers land in the form's Responses tab.
-     Netlify Forms was tried first but Netlify never registered the form. */
+  /* Ask Your Teacher: the real Google Form embedded in the page.
+     Posting to formResponse from our own form never landed (Google
+     silently drops posts that don't come from its own form page —
+     fetch and hidden-iframe posts both failed in tests), while
+     submitting on the Google Form page itself always lands. So the
+     Ask page embeds the form directly; answers land in its
+     Responses tab. */
   ask(){
-    const subs=ALL_SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('');
-    const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/formResponse';
+    const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/viewform?embedded=true';
     return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
-    <form class="askform" id="askform" name="ask-teacher" method="POST" action="${GF}" target="askframe">
-      <label>${t('ask_name')}<input type="text" name="entry.1924161484" placeholder="${esc(t('ask_name_ph'))}" autocomplete="name"></label>
-      <div class="two">
-        <label>${t('ask_class')}<select name="entry.1393161409" required><option value="">—</option><option value="Class 9">${t('cls')} ${num(9)}</option><option value="Class 10">${t('cls')} ${num(10)}</option></select></label>
-        <label>${t('ask_subject')}<select name="entry.577272564" required><option value="">—</option>${subs}</select></label>
-      </div>
-      <label>${t('ask_q')}<textarea name="entry.150238284" rows="5" required placeholder="${esc(t('ask_q_ph'))}"></textarea></label>
-      <input type="hidden" name="fvv" value="1"><input type="hidden" name="pageHistory" value="0"><input type="hidden" name="draftResponse" value="[]"><input type="hidden" name="submit" value="Submit">
-      <button type="submit" class="btn">${t('ask_send')}</button>
-      <p class="askmsg" id="askmsg" role="status"></p>
-    </form><iframe name="askframe" id="askframe" style="display:none" title="ask"></iframe></section>`;
+    <iframe class="gform-embed" src="${GF}" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
   },
   saved(){
     const ids=savedIds();
@@ -342,38 +344,12 @@ document.addEventListener('click',e=>{
   if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class8'&&el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
 });
 document.addEventListener('change',e=>{
-  const s=e.target.closest('select[data-k]'); if(!s) return;
-  (state.f[s.dataset.v]=state.f[s.dataset.v]||{})[s.dataset.k]=s.value; render();
+  const s=e.target.closest('select[data-k]');
+  if(s){ (state.f[s.dataset.v]=state.f[s.dataset.v]||{})[s.dataset.k]=s.value; return render(); }
+  const so=e.target.closest('select[data-sort]');
+  if(so){ (state.f[so.dataset.v]=state.f[so.dataset.v]||{})[so.dataset.sort]=so.value; return render(); }
 });
-/* Ask form: real browser navigation POST into a hidden iframe.
-   A fetch no-cors post never landed in the form's Responses (Google
-   silently drops non-navigation posts), while a direct form submit
-   does land — so the form posts natively and we show success when
-   the hidden iframe finishes loading Google's reply. */
-let askSent=false, askTimer=null;
-document.addEventListener('load',e=>{
-  if(e.target && e.target.id==='askframe' && askSent){
-    askSent=false; if(askTimer){ clearTimeout(askTimer); askTimer=null; }
-    const form=$('#askform'), msg=$('#askmsg');
-    if(form){ form.reset(); const b=form.querySelector('button[type="submit"]'); if(b) b.disabled=false; }
-    if(msg){ msg.className='askmsg ok'; msg.textContent=t('ask_ok_t')+' '+t('ask_ok_m'); }
-  }
-},true);
 document.addEventListener('submit',e=>{
-  if(e.target.id==='askform'){
-    const form=e.target, msg=$('#askmsg');
-    askSent=true;
-    if(msg) msg.textContent='';
-    form.querySelector('button[type="submit"]').disabled=true;
-    askTimer=setTimeout(()=>{
-      if(!askSent) return;
-      askSent=false;
-      if(msg){ msg.className='askmsg err'; msg.textContent=t('ask_err'); }
-      form.querySelector('button[type="submit"]').disabled=false;
-    },12000);
-    /* no preventDefault: the browser posts the form into #askframe */
-    return;
-  }
   if(!e.target.classList.contains('sform')) return;
   e.preventDefault(); state.q=new FormData(e.target).get('q').trim(); state.f.search={};
   if(location.hash==='#search') render(); else location.hash='search';
