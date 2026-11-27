@@ -4,7 +4,7 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['routine','nav_routine'],['ask','nav_ask'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['routine','nav_routine'],['ask','nav_ask'],['submit','nav_submit'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
 const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['mcq','nav_mcq'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
@@ -249,7 +249,7 @@ all_h:'All Files',all_sub:'Every resource in one place — filter by class, subj
 sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
 hero_h1:'Learn Better Through Practice & Growth',hero_h2:'Learn Better Through<br>Practice &amp; Growth',hero_p:'Organized notes, question banks, and complete exam preparation—all in one place.',hero_tag:'Everything for Learning at BEYOND',
 tile_qbank:'Question Bank',tile_class:'Classes',tile_exam:'Exam',tile_pdf:'PDFs',tile_notice:'Notice',tile_contact:'Contact',
-nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',
+nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',nav_submit:'Submit Solved Copy',submit_h:'Submit Your Solved Copy',submit_sub:'Solved a resource on paper? Upload a photo of your solved copy here — your teacher will check it.',
 ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
 ask_ok_t:'Question sent!',ask_ok_m:'Thank you — your teacher will read it and answer soon.',ask_err:'Could not send. Check your connection and try again.',
 search_ph:'Try: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'Search',popular:'Popular searches',subjects:'Subjects',recent:'Recently added',
@@ -282,7 +282,7 @@ all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জা�
 sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
 hero_h1:'শিক্ষায়, চর্চায় ও সাফল্যে শেখা হোক আরও সহজ',hero_h2:'শিক্ষায়, চর্চায় ও সাফল্যে<br>শেখা হোক আরও সহজ',hero_p:'গোছানো নোট, প্রশ্নব্যাংক আর পরীক্ষার সেরা প্রস্তুতি এখন এক জায়গায়।',hero_tag:'শেখার সবকিছু BEYOND-এ',
 tile_qbank:'প্রশ্নব্যাংক',tile_class:'ক্লাস',tile_exam:'পরীক্ষা',tile_pdf:'পিডিএফ',tile_notice:'নোটিশ',tile_contact:'যোগাযোগ',
-nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',
+nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',nav_submit:'Solved Copy জমা দাও',submit_h:'Solved Copy জমা দাও',submit_sub:'খাতায় solve করেছো? তোমার solved copy-র ছবি এখানে জমা দাও — তোমার শিক্ষক দেখবেন।',
 ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
 ask_ok_t:'প্রশ্ন পাঠানো হয়েছে!',ask_ok_m:'ধন্যবাদ — তোমার শিক্ষক পড়বেন আর শীঘ্রই উত্তর দেবেন।',ask_err:'পাঠানো যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করো।',
 search_ph:'খুঁজুন: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'খুঁজুন',popular:'জনপ্রিয় খোঁজ',subjects:'বিষয়সমূহ',recent:'সম্প্রতি যোগ হয়েছে',
@@ -459,7 +459,7 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['routine','nav_routine'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['contact','nav_contact']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['routine','nav_routine'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['submit','nav_submit'],['contact','nav_contact']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     /* BEYOND Notice — like AAPathshala's "Pathshala Barta": the newest
@@ -522,6 +522,16 @@ const V = {
     const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/viewform?embedded=true';
     return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
     <iframe class="gform-embed" src="${GF}" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
+  },
+  /* Submit Solved Copy: the real Google Form embedded in the page
+     (same lesson as Ask Your Teacher — only submissions made on
+     Google's own form page land in Responses). Students upload a
+     photo/PDF of their handwritten solved copy; answers land in the
+     "Solved Copy জমা দাও — BEYOND" form's Responses tab. */
+  submit(){
+    const GF='https://docs.google.com/forms/d/e/1FAIpQLSfB6nrVIKcFLUmVqLsHn31diC1ih6H7DiWf0bEIFCi9K74dRw/viewform?embedded=true';
+    return `<section class="wrap narrow"><h1>${t('submit_h')}</h1><p class="sub">${t('submit_sub')}</p>
+    <iframe class="gform-embed" src="${GF}" width="100%" height="1000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
   },
   /* MCQ Exam: all questions on one page, top to bottom. Submit once at
      the bottom — marks + correct/wrong review appear right away. */
@@ -628,6 +638,7 @@ function render(){
   let html;
   if(name==='home') html=V.home();
   else if(name==='ask') html=V.ask();
+  else if(name==='submit') html=V.submit();
   else if(name==='mcq') html=V.mcq();
   else if(name==='contact') html=V.contact();
   else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||t('nav_search'))}</h1>${body('',3)}</section>`;
