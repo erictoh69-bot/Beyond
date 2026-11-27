@@ -267,7 +267,7 @@ const V = {
       const count=state.res.filter(r=>r.cls===String(n)).length;
       const subs=[...new Set(state.res.filter(r=>r.cls===String(n)).map(r=>r.grp))].filter(Boolean);
       return `<article class="course"><span class="course-n">${num(n)}</span><h3>${t('cls')} ${num(n)}</h3>
-      <p>${rc(count)}${subs.length?' · '+subs.join(', '):''}</p>
+      <p>${state.status==='ok'?rc(count):'…'}${subs.length?' · '+subs.join(', '):''}</p>
       <a class="btn" href="#class${n}">${t('cls')} ${num(n)} →</a></article>`;
     };
     return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
@@ -346,9 +346,10 @@ const V = {
         ${qq.exp?`<p class="meta">${esc(qq.exp)}</p>`:''}</div>`;
       }).join('');
       const pct=Math.round(score/total*100);
+      const unans=set.questions.filter((qq,i)=>m.answers[i]==null).length;
       return `<section class="wrap narrow2"><div class="result"><h1>${t('mcq_result')}</h1>
       <p class="score"><strong>${num(score)}</strong> / ${num(total)}</p>
-      <p>${num(pct)}% · ${num(score)} ${t('mcq_correct')} · ${num(total-score)} ${t('mcq_wrong')}</p>
+      <p>${num(pct)}% · ${num(score)} ${t('mcq_correct')} · ${num(total-score)} ${t('mcq_wrong')}${unans?` · ${num(unans)} ${t('mcq_notanswered')}`:''}</p>
       ${m.name?`<p class="meta">${esc(m.name)}</p>`:''}</div>
       <div class="qlist">${review}</div>
       <div class="actions"><button type="button" class="btn" data-mcq-retry>${t('mcq_retry')}</button>
@@ -451,8 +452,9 @@ document.addEventListener('click',e=>{
   if(el.dataset.mcqSubmit!==undefined){
     const set=mcqSet(); if(!set) return;
     const nameEl=document.getElementById('mcqname'); state.mcq.name=nameEl?nameEl.value.trim():'';
-    const un=set.questions.length-Object.keys(state.mcq.answers).length;
-    if(un>0 && !confirm(state.lang==='bn'?`${num(un)}টি প্রশ্নের উত্তর দাওনি। তবুও জমা দেবে?`:`You have ${un} unanswered question(s). Submit anyway?`)) return;
+    /* Submit always works — unanswered questions count as wrong.
+       (A confirm() dialog used to block this and failed silently
+       when the dialog was not answered, so students saw nothing.) */
     let score=0; set.questions.forEach((qq,i)=>{ if(state.mcq.answers[i]===qq.answer) score++; });
     mcqSaveLast(set.id,score,set.questions.length);
     state.mcq.submitted=true; render(); window.scrollTo(0,0); return;
