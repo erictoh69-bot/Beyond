@@ -21,7 +21,7 @@ const NEW_DAYS = 7;
    correct option (0-3), exp = short explanation shown in the result.
    To add a set, copy one set object, change id/title/questions. */
 const MCQ_SETS = [
-{ id:"chem-ssc-1", cls:"10", subject:"Chemistry", title:"SSC Chemistry — Set 1", desc:"From Rakib's Classroom Chemistry Practice Book — Concepts of Chemistry. English Version.",
+{ id:"chem-ssc-1", cls:"10", subject:"Chemistry", title:"SSC Chemistry — Set 1", desc:"Concepts of Chemistry. English Version.",
   questions:[
   {q:"Who is called the father of modern chemistry? Or, which scientist is called the father of modern chemistry?",options:["Niels Bohr","Lavoisier","Democritus","Jabir ibn Hayyan"],answer:1,exp:"Antoine Lavoisier began the practice of chemistry to uncover the true mystery of chemistry, so he is called the father of modern chemistry. Jabir ibn Hayyan is the father of chemistry (not modern); Democritus gave the idea of the atom."},
   {q:"Which metal was first used by humans in ancient times?",options:["Copper","Gold","Silver","Tin"],answer:0,exp:"According to the information found so far, the first metal used by humans is copper. Gold, silver, tin and iron have been used since ancient times, but they were not the first."},
@@ -33,7 +33,7 @@ const MCQ_SETS = [
   {q:"In which ingredient is cellulose present?",options:["Polythene","Table salt","Urea","Bamboo"],answer:3,exp:"Bamboo, sugarcane bagasse, etc. contain cellulose in large amounts; paper is made from these. Polythene is a polymer (from ethylene), table salt is NaCl, urea is a fertilizer — these do not contain cellulose."},
   {q:"What is present in paper?",options:["Fructose","Glucose","Starch","Cellulose"],answer:3,exp:"The main ingredient of paper is cellulose. Paper is made by chemically processing the cellulose of bamboo and sugarcane bagasse. Glucose, fructose and starch are not ingredients of paper."},
   {q:"What is the cause of death of people in olautha or cholera disease?",options:["Excessive sweating","Shortage of water in the body","Fever","Deficiency of table salt"],answer:1,exp:"Most of a living being's body is water. In cholera (olautha) disease, diarrhoea and vomiting expel a large amount of water from the body, causing a shortage of water (dehydration). This dehydration is the main cause of death in cholera."},
- ]},{ id:"ict-ssc-1", cls:"10", subject:"ICT", title:"SSC ICT — Set 1", desc:"From Raju Academy SSC ICT Suggestion — Chapter 1: ICT and Our Bangladesh. English Version.",
+ ]},{ id:"ict-ssc-1", cls:"10", subject:"ICT", title:"SSC ICT — Set 1", desc:"Chapter 1: ICT and Our Bangladesh. English Version.",
   questions:[
   {q:"What is the unwritten rule of the new world?",options:["Globalization","Communication skill","Creativity","Internationalism"],answer:3,exp:""},
   {q:"Which type of wave did scientist Jagadish Chandra Bose use to send messages without wires?",options:["Small","Wireless","Very small (1895)","Ultraviolet"],answer:2,exp:""},
