@@ -46,7 +46,7 @@ h1,h2,h3{color:var(--navy);line-height:1.25;margin:0 0 .4em;font-weight:800;lett
 /* hero */
 .hero{background:#fff;color:var(--text);padding:36px 16px 28px;text-align:center}
 .hero .in{max-width:760px;margin:0 auto}
-.hero h1{color:var(--red);font-size:clamp(2.1rem,8vw,3.4rem);margin-bottom:.25em;line-height:1.2}
+.hero h1{color:var(--red);font-size:clamp(1.8rem,8vw,3.4rem);margin-bottom:.25em;line-height:1.2}
 .hero h2{color:var(--text);font-size:clamp(1.15rem,4vw,1.5rem);font-weight:700;letter-spacing:0}
 .hero p{color:var(--muted);max-width:56ch;margin-left:auto;margin-right:auto}
 .sform{display:flex;gap:8px;margin-top:22px;background:#fff;border-radius:999px;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
