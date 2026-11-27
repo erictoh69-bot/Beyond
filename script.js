@@ -56,7 +56,8 @@ mcq_sets:'Choose a set',mcq_q:'questions',mcq_marks:'marks',mcq_start:'Start exa
 contact_h:'Contact Us',contact_sub:'Send a message, feedback or a suggestion — your teacher will read it.',
 all_h:'All Files',all_sub:'Every resource in one place — filter by class, subject, chapter or type.',
 sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
-hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
+hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',hero_tag:'Everything you need to learn, in one place.',
+tile_qbank:'Question Bank',tile_class:'Classes',tile_exam:'Exam',tile_pdf:'PDFs',tile_notice:'Notice',tile_contact:'Contact',
 nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',
 ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
 ask_ok_t:'Question sent!',ask_ok_m:'Thank you — your teacher will read it and answer soon.',ask_err:'Could not send. Check your connection and try again.',
@@ -87,7 +88,8 @@ mcq_sets:'সেট বেছে নাও',mcq_q:'টি প্রশ্ন',mc
 contact_h:'যোগাযোগ',contact_sub:'মেসেজ, মতামত বা পরামর্শ পাঠাও — তোমার শিক্ষক পড়বেন।',
 all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জায়গায় — ক্লাস, বিষয়, অধ্যায় বা ধরন দিয়ে ফিল্টার করো।',
 sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
-hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
+hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',hero_tag:'শেখার সবকিছু BEYOND-এ',
+tile_qbank:'প্রশ্নব্যাংক',tile_class:'ক্লাস',tile_exam:'পরীক্ষা',tile_pdf:'পিডিএফ',tile_notice:'নোটিশ',tile_contact:'যোগাযোগ',
 nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',
 ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
 ask_ok_t:'প্রশ্ন পাঠানো হয়েছে!',ask_ok_m:'ধন্যবাদ — তোমার শিক্ষক পড়বেন আর শীঘ্রই উত্তর দেবেন।',ask_err:'পাঠানো যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করো।',
@@ -112,6 +114,17 @@ saved_empty_t:'এখনো কিছু সেভ করোনি',saved_empty_
 cls:'ক্লাস',subject:'বিষয়',chapter:'অধ্যায়',type:'ধরন' }
 };
 const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
+/* Red tiles under the hero, like aapathshala's home: [page, label key, href, icon] */
+const TILE_ICONS = {
+book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+exam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+pdf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>',
+notice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>',
+chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
+};
+const TILES = [['qbank','tile_qbank','#qbank','book'],['class','tile_class','#courses','users'],['mcq','tile_exam','#mcq','exam'],['all','tile_pdf','#all','pdf'],['notice','tile_notice','#notice','notice'],['contact','tile_contact','#contact','chat']];
+const tilesHtml = () => `<div class="tiles">${TILES.map(([,k,h,ic])=>`<a class="tile" href="${h}"><span class="tile-ic">${TILE_ICONS[ic]}</span><span>${t(k)}</span></a>`).join('')}</div>`;
 const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en', mcq:{ setId:null, answers:{}, submitted:false, name:'' } };
 const mcqSet = () => MCQ_SETS.find(s=>s.id===state.mcq.setId) || null;
 const mcqLast = id => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); return v[id]||null; }catch(e){ return null; } };
@@ -270,10 +283,11 @@ const V = {
       <p>${state.status==='ok'?rc(count):'…'}${subs.length?' · '+subs.join(', '):''}</p>
       <a class="btn" href="#class${n}">${t('cls')} ${num(n)} →</a></article>`;
     };
-    return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
+    return `<section class="hero"><div class="in"><h1>${t('hero_h2')}</h1><h2>${t('hero_tag')}</h2>
     <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
-    <section class="notice"><div class="wrap"><h2>📢 ${t('notice_h')}</h2>${noticeHtml}</div></section>
-    <section class="wrap"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
+    <section class="wrap tiles-wrap">${tilesHtml()}</section>
+    <section class="notice" id="notice"><div class="wrap"><h2>📢 ${t('notice_h')}</h2>${noticeHtml}</div></section>
+    <section class="wrap" id="courses"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
     <h2>${t('courses_h')}</h2><p class="sub">${t('courses_sub')}</p>
     <div class="course-grid">${courseCard(8)}${courseCard(9)}${courseCard(10)}
     <article class="course mcq-card"><span class="course-n">?</span><h3>${t('nav_mcq')}</h3>
@@ -434,12 +448,13 @@ function render(){
     return s;
   }).join('');
   $('#bnav').innerHTML=BNAV.map(([k,key])=>`<a href="#${k}"${k===name?' class="on" aria-current="page"':''}>${t(key)}</a>`).join('');
+  const tn=$('#topnav'); if(tn) tn.innerHTML=TILES.map(([,k,h])=>`<a href="${h}">${t(k)}</a>`).join('');
   const lb=$('#langbtn'); if(lb) lb.textContent=state.lang==='bn'?'EN':'বাংলা';
   const ft=$('#foot'); if(ft) ft.textContent=t('footer');
   setMenu(false);
 }
 let lastView='';
-function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){ window.scrollTo(0,0); lastView=v; } }
+function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){ if(v==='#courses'||v==='#notice'){ const el=document.querySelector(v); if(el) el.scrollIntoView(); else window.scrollTo(0,0); } else window.scrollTo(0,0); lastView=v; } }
 
 /* ---------- events ---------- */
 function setMenu(o){ document.body.classList.toggle('open',o); $('#burger').setAttribute('aria-expanded',o); $('#burger').setAttribute('aria-label',o?'Close menu':'Open menu'); }
