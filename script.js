@@ -183,7 +183,7 @@ en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 
 notice_h:'BEYOND Notice',notice_empty:'New resources and exam news will appear here.',
 courses_h:'Learn by class',courses_sub:'Pick your class and start — notes, questions and practice, chapter by chapter.',
 mcq_h:'MCQ Exam',mcq_sub:'Practice with exam-style MCQs. All questions are on one page, top to bottom — answer them all, submit, and see your marks at once.',
-mcq_sets:'Choose a set',mcq_q:'questions',mcq_marks:'marks',mcq_start:'Start exam →',mcq_name:'Your name (optional)',mcq_answered:'Answered',mcq_submit:'Submit exam',mcq_result:'Your result',mcq_out_of:'out of',mcq_correct:'Correct',mcq_wrong:'Wrong',mcq_notanswered:'Not answered',mcq_your:'Your answer',mcq_right:'Correct answer',mcq_retry:'Try again',mcq_back:'← Back to all sets',mcq_last:'Last score',mcq_sample:'Sample set — more sets coming soon',
+mcq_sets:'Choose a set',mcq_q:'questions',mcq_marks:'marks',mcq_start:'Start exam →',mcq_name:'Your name (optional)',mcq_answered:'Answered',mcq_submit:'Submit exam',mcq_result:'Your result',mcq_out_of:'out of',mcq_correct:'Correct',mcq_wrong:'Wrong',mcq_notanswered:'Not answered',mcq_your:'Your answer',mcq_right:'Correct answer',mcq_retry:'Try again',mcq_back:'← Back to all sets',mcq_last:'Last score',
 contact_h:'Contact Us',contact_sub:'Send a message, feedback or a suggestion — your teacher will read it.',
 all_h:'All Files',all_sub:'Every resource in one place — filter by class, subject, chapter or type.',
 sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
@@ -215,7 +215,7 @@ bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লা
 notice_h:'BEYOND নোটিশ',notice_empty:'নতুন রিসোর্স আর পরীক্ষার খবর এখানে দেখা যাবে।',
 courses_h:'ক্লাস অনুযায়ী শেখো',courses_sub:'তোমার ক্লাস বেছে নাও আর শুরু করো — নোট, প্রশ্ন আর প্র্যাকটিস, অধ্যায় অনুযায়ী।',
 mcq_h:'MCQ পরীক্ষা',mcq_sub:'পরীক্ষার মতো MCQ দিয়ে প্র্যাকটিস করো। সব প্রশ্ন এক পেজে, উপর থেকে নিচে থাকবে — সবগুলোর উত্তর দিয়ে সাবমিট করলেই মার্কস দেখতে পাবে।',
-mcq_sets:'সেট বেছে নাও',mcq_q:'টি প্রশ্ন',mcq_marks:'মার্কস',mcq_start:'পরীক্ষা শুরু করো →',mcq_name:'তোমার নাম (ঐচ্ছিক)',mcq_answered:'উত্তর দিয়েছো',mcq_submit:'পরীক্ষা জমা দাও',mcq_result:'তোমার ফলাফল',mcq_out_of:'এর মধ্যে',mcq_correct:'সঠিক',mcq_wrong:'ভুল',mcq_notanswered:'উত্তর দাওনি',mcq_your:'তোমার উত্তর',mcq_right:'সঠিক উত্তর',mcq_retry:'আবার চেষ্টা করো',mcq_back:'← সব সেটে ফিরে যাও',mcq_last:'শেষ স্কোর',mcq_sample:'নমুনা সেট — আরও সেট শীঘ্রই আসছে',
+mcq_sets:'সেট বেছে নাও',mcq_q:'টি প্রশ্ন',mcq_marks:'মার্কস',mcq_start:'পরীক্ষা শুরু করো →',mcq_name:'তোমার নাম (ঐচ্ছিক)',mcq_answered:'উত্তর দিয়েছো',mcq_submit:'পরীক্ষা জমা দাও',mcq_result:'তোমার ফলাফল',mcq_out_of:'এর মধ্যে',mcq_correct:'সঠিক',mcq_wrong:'ভুল',mcq_notanswered:'উত্তর দাওনি',mcq_your:'তোমার উত্তর',mcq_right:'সঠিক উত্তর',mcq_retry:'আবার চেষ্টা করো',mcq_back:'← সব সেটে ফিরে যাও',mcq_last:'শেষ স্কোর',
 contact_h:'যোগাযোগ',contact_sub:'মেসেজ, মতামত বা পরামর্শ পাঠাও — তোমার শিক্ষক পড়বেন।',
 all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জায়গায় — ক্লাস, বিষয়, অধ্যায় বা ধরন দিয়ে ফিল্টার করো।',
 sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
@@ -474,7 +474,7 @@ const V = {
         <button type="button" class="btn" data-mcq-set="${esc(s.id)}">${t('mcq_start')}</button></article>`;
       }).join('');
       return `<section class="wrap"><h1>${t('mcq_h')}</h1><p class="sub">${t('mcq_sub')}</p>
-      <p class="sub">${t('mcq_sample')}</p><div class="course-grid">${cards}</div></section>`;
+      <div class="course-grid">${cards}</div></section>`;
     }
     const m=state.mcq, total=set.questions.length;
     if(m.submitted){
