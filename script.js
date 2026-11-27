@@ -4,7 +4,7 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['ask','nav_ask'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['routine','nav_routine'],['ask','nav_ask'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
 const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['mcq','nav_mcq'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
@@ -177,13 +177,73 @@ const MCQ_SETS = [
   {"q":"নিচের উদ্দীপকের আলোকে পরবর্তী দুইটি প্রশ্নের উত্তর দাও:\nরাফি শহরে বড় হলেও ছুটিতে গ্রামের বাড়িতে যায়। সেখানে সে নদী, খাল, মাঠ, বন, বাগান দেখে মুগ্ধ হয়ে যায়। প্রকৃতির প্রতি গভীর ভালোবাসা অনুভব করে, কৌতূহলী হয়ে সে নানা জিনিস বানানোর চেষ্টা করে। গ্রামের ছেলেদের সাথে গোরু-ছাগল চরিয়ে আর বিরামহীন খেলাধুলা করে তার দিন কেটে যায়।\nরাফির সাথে 'আম-আঁটির ভেঁপু' গল্পের কোন চরিত্রের মিল পাওয়া যায়?","options":["দুর্গা","রিমন","রিতা","অপু"],"answer":3,"exp":""},
   {"q":"নিচের উদ্দীপকের আলোকে পরবর্তী দুইটি প্রশ্নের উত্তর দাও:\nরাফি শহরে বড় হলেও ছুটিতে গ্রামের বাড়িতে যায়। সেখানে সে নদী, খাল, মাঠ, বন, বাগান দেখে মুগ্ধ হয়ে যায়। প্রকৃতির প্রতি গভীর ভালোবাসা অনুভব করে, কৌতূহলী হয়ে সে নানা জিনিস বানানোর চেষ্টা করে। গ্রামের ছেলেদের সাথে গোরু-ছাগল চরিয়ে আর বিরামহীন খেলাধুলা করে তার দিন কেটে যায়।\nউদ্দীপকে 'আম-আঁটির ভেঁপু' গল্পের যে দিকটি অনুপস্থিত-\n(i) দারিদ্র্যের চিত্র\n(ii) প্রকৃতি ঘনিষ্ঠতা\n(iii) দুরন্তপনা ও কৌতূহলপ্রবণ\nনিচের কোনটি সঠিক?","options":["i","iii","i, ii","ii, iii"],"answer":0,"exp":""}
  ]},];
+/* ---------- SSC 2027 exam routine (final, approved 24 Aug 2026) ----------
+   The PDF sent earlier (memo আশিবো/প্রশা/২০১০/, dated 14/05/2026) was the
+   OLD proposed routine starting 7 Jan 2027 — the board replaced it on
+   24 Aug 2026 with this March–April routine. Written exams 14 Mar–15 Apr
+   2027, all at 10:00 AM; practicals by 22 Apr 2027. Subject names and
+   codes follow the board's own routine. */
+const ROUTINE = [
+{ d:'2027-03-14', s:[['বাংলা (আবশ্যিক)-১ম পত্র','101'],['সহজ বাংলা-১ম পত্র','103']] },
+{ d:'2027-03-16', s:[['বাংলা (আবশ্যিক)-২য় পত্র','102'],['সহজ বাংলা-২য় পত্র','104']] },
+{ d:'2027-03-18', s:[['ইংরেজি (আবশ্যিক)-১ম পত্র','107']] },
+{ d:'2027-03-21', s:[['ইংরেজি (আবশ্যিক)-২য় পত্র','108']] },
+{ d:'2027-03-22', s:[['তথ্য ও যোগাযোগ প্রযুক্তি','154']] },
+{ d:'2027-03-25', s:[['গণিত (আবশ্যিক)','109']] },
+{ d:'2027-03-28', s:[['বাংলাদেশ ও বিশ্ব পরিচয়','150']] },
+{ d:'2027-03-30', s:[['পদার্থবিজ্ঞান (তত্ত্বীয়)','136'],['বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা','153'],['ফিন্যান্স ও ব্যাংকিং','152']] },
+{ d:'2027-04-01', s:[['ভূগোল ও পরিবেশ','110']] },
+{ d:'2027-04-04', s:[['রসায়ন (তত্ত্বীয়)','137'],['পৌরনীতি ও নাগরিকতা','140'],['ব্যবসায় উদ্যোগ','143']] },
+{ d:'2027-04-06', s:[['গার্হস্থ্যবিজ্ঞান (তত্ত্বীয়)','151'],['কৃষিশিক্ষা (তত্ত্বীয়)','134'],['সঙ্গীত (তত্ত্বীয়)','149'],['আরবি','121'],['সংস্কৃত','123'],['পালি','124'],['শারীরিক শিক্ষা ও ক্রীড়া (তত্ত্বীয়)','133'],['চারু ও কারুকলা (তত্ত্বীয়)','148']] },
+{ d:'2027-04-08', s:[['হিসাববিজ্ঞান','146']] },
+{ d:'2027-04-11', s:[['উচ্চতর গণিত (তত্ত্বীয়)','126'],['বিজ্ঞান','127']] },
+{ d:'2027-04-13', s:[['জীববিজ্ঞান (তত্ত্বীয়)','138'],['অর্থনীতি','141']] },
+{ d:'2027-04-15', s:[['ইসলাম ও নৈতিক শিক্ষা / ইসলাম শিক্ষা','111'],['হিন্দুধর্ম ও নৈতিক শিক্ষা / হিন্দুধর্ম শিক্ষা','112'],['বৌদ্ধধর্ম ও নৈতিক শিক্ষা / বৌদ্ধধর্ম শিক্ষা','113'],['খ্রিস্টধর্ম ও নৈতিক শিক্ষা / খ্রিস্টধর্ম শিক্ষা','114']] },
+];
+const MONTHS={en:['January','February','March','April','May','June','July','August','September','October','November','December'],bn:['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর']};
+const DAYS={en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],bn:['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার']};
+const fmtDate = iso => { const dt=new Date(iso+'T00:00:00'); return num(dt.getDate())+' '+MONTHS[state.lang][dt.getMonth()]+' '+num(dt.getFullYear())+', '+DAYS[state.lang][dt.getDay()]; };
+
+/* ---------- SSC 2027 countdown ----------
+   Big "Days to go", small hours/minutes/seconds below, ticking live.
+   Target: first exam, 14 Mar 2027 10:00 AM Dhaka time. While the exams
+   run it counts down to the last exam (15 Apr); after that it says done.
+   One global 1-second ticker updates every [data-cd] block on the page,
+   so it survives re-renders when the user navigates. */
+const CD_START = Date.parse('2027-03-14T10:00:00+06:00');
+const CD_END = Date.parse('2027-04-15T23:59:59+06:00');
+const cdInner = () => `<div class="cd-days"><span class="cd-num" data-cd-days>–</span><span class="cd-cap" data-cd-cap>${t('routine_days')}</span></div>
+<div class="cd-hms" data-cd-hms><span><b data-cd-h>–</b><i>${t('routine_hours')}</i></span><span><b data-cd-m>–</b><i>${t('routine_mins')}</i></span><span><b data-cd-s>–</b><i>${t('routine_secs')}</i></span></div>
+<span class="cd-sub" data-cd-sub>${t('routine_starts')}</span>`;
+function tickCd(){
+  const now=Date.now();
+  document.querySelectorAll('[data-cd]').forEach(el=>{
+    const d=el.querySelector('[data-cd-days]'), cap=el.querySelector('[data-cd-cap]'),
+      h=el.querySelector('[data-cd-h]'), m=el.querySelector('[data-cd-m]'), s=el.querySelector('[data-cd-s]'),
+      hms=el.querySelector('[data-cd-hms]'), sub=el.querySelector('[data-cd-sub]');
+    if(!d) return;
+    const fill=(target,label)=>{
+      const diff=target-now, rem=diff%864e5;
+      d.textContent=num(Math.floor(diff/864e5));
+      if(h) h.textContent=num(Math.floor(rem/36e5));
+      if(m) m.textContent=num(Math.floor(rem%36e5/6e4));
+      if(s) s.textContent=num(Math.floor(rem%6e4/1e3));
+      if(cap) cap.textContent=label;
+      if(hms) hms.style.display='';
+    };
+    if(now<CD_START){ fill(CD_START,t('routine_days')); if(sub) sub.textContent=t('routine_starts'); }
+    else if(now<=CD_END){ fill(CD_END,t('routine_days_end')); if(sub) sub.textContent=t('routine_live'); }
+    else { d.textContent='✓'; if(cap) cap.textContent=t('routine_done'); if(hms) hms.style.display='none'; if(sub) sub.textContent=t('routine_done'); }
+  });
+}
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
-en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',nav_mcq:'MCQ Exam',nav_contact:'Contact Us',
+en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',nav_mcq:'MCQ Exam',nav_routine:'Routine',nav_contact:'Contact Us',
 notice_h:'BEYOND Notice',notice_empty:'New resources and exam news will appear here.',
 courses_h:'Learn by class',courses_sub:'Pick your class and start — notes, questions and practice, chapter by chapter.',
 mcq_h:'MCQ Exam',mcq_sub:'Practice with exam-style MCQs. All questions are on one page, top to bottom — answer them all, submit, and see your marks at once.',
 mcq_sets:'Choose a set',mcq_q:'questions',mcq_marks:'marks',mcq_start:'Start exam →',mcq_name:'Your name (optional)',mcq_answered:'Answered',mcq_submit:'Submit exam',mcq_result:'Your result',mcq_out_of:'out of',mcq_correct:'Correct',mcq_wrong:'Wrong',mcq_notanswered:'Not answered',mcq_your:'Your answer',mcq_right:'Correct answer',mcq_retry:'Try again',mcq_back:'← Back to all sets',mcq_last:'Last score',
+routine_h:'SSC Exam Routine 2027',routine_sub:'Written exams 14 March – 15 April 2027. Every written exam starts at 10:00 AM.',routine_days:'Days to go',routine_days_end:'Days left (last exam)',routine_hours:'Hours',routine_mins:'Minutes',routine_secs:'Seconds',routine_starts:'SSC 2027 starts 14 March 2027, 10:00 AM',routine_live:'Exams are on now — last exam 15 April',routine_done:'SSC 2027 exams are over',routine_th_subject:'Subject',routine_th_code:'Code',routine_th_date:'Date & Day',routine_practical_h:'Practical exams',routine_practical:'All practical exams, including Music, must be completed by 22 April 2027 at your own exam centre. Practicals start at 10:00 AM every day.',routine_note:'Final routine approved by the Ministry of Education on 24 August 2026. The board may change the dates if needed.',
 contact_h:'Contact Us',contact_sub:'Send a message, feedback or a suggestion — your teacher will read it.',
 all_h:'All Files',all_sub:'Every resource in one place — filter by class, subject, chapter or type.',
 sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
@@ -211,11 +271,12 @@ empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear her
 saved_h:'Saved resources',saved_sub:'Your saved resources, kept in this browser.',
 saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to keep it here.',
 cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
-bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',nav_mcq:'MCQ পরীক্ষা',nav_contact:'যোগাযোগ',
+bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',nav_mcq:'MCQ পরীক্ষা',nav_routine:'রুটিন',nav_contact:'যোগাযোগ',
 notice_h:'BEYOND নোটিশ',notice_empty:'নতুন রিসোর্স আর পরীক্ষার খবর এখানে দেখা যাবে।',
 courses_h:'ক্লাস অনুযায়ী শেখো',courses_sub:'তোমার ক্লাস বেছে নাও আর শুরু করো — নোট, প্রশ্ন আর প্র্যাকটিস, অধ্যায় অনুযায়ী।',
 mcq_h:'MCQ পরীক্ষা',mcq_sub:'পরীক্ষার মতো MCQ দিয়ে প্র্যাকটিস করো। সব প্রশ্ন এক পেজে, উপর থেকে নিচে থাকবে — সবগুলোর উত্তর দিয়ে সাবমিট করলেই মার্কস দেখতে পাবে।',
 mcq_sets:'সেট বেছে নাও',mcq_q:'টি প্রশ্ন',mcq_marks:'মার্কস',mcq_start:'পরীক্ষা শুরু করো →',mcq_name:'তোমার নাম (ঐচ্ছিক)',mcq_answered:'উত্তর দিয়েছো',mcq_submit:'পরীক্ষা জমা দাও',mcq_result:'তোমার ফলাফল',mcq_out_of:'এর মধ্যে',mcq_correct:'সঠিক',mcq_wrong:'ভুল',mcq_notanswered:'উত্তর দাওনি',mcq_your:'তোমার উত্তর',mcq_right:'সঠিক উত্তর',mcq_retry:'আবার চেষ্টা করো',mcq_back:'← সব সেটে ফিরে যাও',mcq_last:'শেষ স্কোর',
+routine_h:'এসএসসি পরীক্ষার রুটিন ২০২৭',routine_sub:'লিখিত পরীক্ষা ১৪ মার্চ – ১৫ এপ্রিল ২০২৭। সব লিখিত পরীক্ষা সকাল ১০:০০টায় শুরু।',routine_days:'দিন বাকি',routine_days_end:'শেষ পরীক্ষার দিন বাকি',routine_hours:'ঘণ্টা',routine_mins:'মিনিট',routine_secs:'সেকেন্ড',routine_starts:'এসএসসি ২০২৭ শুরু ১৪ মার্চ ২০২৭, সকাল ১০:০০টা',routine_live:'পরীক্ষা চলছে — শেষ পরীক্ষা ১৫ এপ্রিল',routine_done:'এসএসসি ২০২৭ পরীক্ষা শেষ',routine_th_subject:'বিষয়',routine_th_code:'কোড',routine_th_date:'তারিখ ও দিন',routine_practical_h:'ব্যবহারিক পরীক্ষা',routine_practical:'সঙ্গীতসহ সকল বিষয়ের ব্যবহারিক পরীক্ষা ২২ এপ্রিল ২০২৭-এর মধ্যে নিজ কেন্দ্রে শেষ করতে হবে। ব্যবহারিক পরীক্ষা প্রতিদিন সকাল ১০:০০টায় শুরু।',routine_note:'২৪ আগস্ট ২০২৬ শিক্ষা মন্ত্রণালয়ের অনুমোদিত চূড়ান্ত রুটিন। প্রয়োজনে বোর্ড তারিখ পরিবর্তন করতে পারে।',
 contact_h:'যোগাযোগ',contact_sub:'মেসেজ, মতামত বা পরামর্শ পাঠাও — তোমার শিক্ষক পড়বেন।',
 all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জায়গায় — ক্লাস, বিষয়, অধ্যায় বা ধরন দিয়ে ফিল্টার করো।',
 sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
@@ -398,7 +459,7 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['contact','nav_contact']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['routine','nav_routine'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['contact','nav_contact']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     /* BEYOND Notice — like AAPathshala's "Pathshala Barta": the newest
@@ -417,6 +478,7 @@ const V = {
     return `<section class="hero"><div class="in"><h1>${t('hero_h2')}</h1><h2>${t('hero_tag')}</h2>
     <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
     <section class="wrap tiles-wrap">${tilesHtml()}</section>
+    <section class="wrap cd-strip-wrap"><a class="cd cd-strip" href="#routine" data-cd><span class="cd-tag">${t('routine_h')}</span>${cdInner()}</a></section>
     <section class="notice" id="notice"><div class="wrap"><h2>📢 ${t('notice_h')}</h2>${noticeHtml}</div></section>
     <section class="wrap" id="courses"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
     <h2>${t('courses_h')}</h2><p class="sub">${t('courses_sub')}</p>
@@ -518,6 +580,16 @@ const V = {
     const GF='https://docs.google.com/forms/d/e/1FAIpQLScUcDm0rJ83QPwM5SW0pZ-Ns2pvBhs3nJFg0WTLPosXSarn3g/viewform?embedded=true';
     return `<section class="wrap narrow"><h1>${t('contact_h')}</h1><p class="sub">${t('contact_sub')}</p>
     <iframe class="gform-embed" src="${GF}" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
+  },
+  /* SSC 2027 routine: big live countdown on top, then the full
+     subject-wise table, then practical exams. */
+  routine(){
+    const rows=ROUTINE.map(r=>`<tr><td>${r.s.map(([n])=>esc(n)).join('<br>')}</td><td class="c">${r.s.map(([,c])=>num(c)).join('<br>')}</td><td class="c">${fmtDate(r.d)}</td></tr>`).join('');
+    return `<section class="wrap"><h1>${t('routine_h')}</h1><p class="sub">${t('routine_sub')}</p>
+    <div class="cd" data-cd>${cdInner()}</div>
+    <div class="rtable-wrap"><table class="rtable"><thead><tr><th>${t('routine_th_subject')}</th><th>${t('routine_th_code')}</th><th>${t('routine_th_date')}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <h2>${t('routine_practical_h')}</h2><p>${t('routine_practical')}</p>
+    <p class="meta">${t('routine_note')}</p></section>`;
   },
   saved(){
     const ids=savedIds();
@@ -639,3 +711,4 @@ document.addEventListener('submit',e=>{
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') setMenu(false); });
 window.addEventListener('hashchange',onHash);
 onHash(); load();
+setInterval(tickCd,1000); tickCd();
