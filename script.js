@@ -21,30 +21,30 @@ const NEW_DAYS = 7;
    correct option (0-3), exp = short explanation shown in the result.
    To add a set, copy one set object, change id/title/questions. */
 const MCQ_SETS = [
-{ id:'ict8-1', cls:'8', subject:'ICT', title:'Class 8 ICT — Set 1', desc:'Computer, memory, input & output devices.',
+{ id:'ict8-1', cls:'8', subject:'ICT', title:'Class 8 ICT — Set 1', desc:'Computer, memory, input & output devices. English Version.',
   questions:[
-  {q:'CPU-এর পূর্ণরূপ কোনটি?',options:['Central Processing Unit','Computer Personal Unit','Central Program Unit','Computer Processing Unit'],answer:0,exp:'CPU = Central Processing Unit — কম্পিউটারের মস্তিষ্ক।'},
-  {q:'নিচের কোনটি ইনপুট ডিভাইস?',options:['Monitor','Printer','Keyboard','Speaker'],answer:2,exp:'Keyboard দিয়ে তথ্য কম্পিউটারে ঢোকানো হয়।'},
-  {q:'নিচের কোনটি আউটপুট ডিভাইস?',options:['Mouse','Scanner','Monitor','Keyboard'],answer:2,exp:'Monitor-এ ফলাফল দেখা যায়।'},
-  {q:'RAM কেমন মেমোরি?',options:['স্থায়ী মেমোরি','অস্থায়ী মেমোরি','শুধু পড়া যায়','বাইরের মেমোরি'],answer:1,exp:'RAM অস্থায়ী — বিদ্যুৎ বন্ধ হলে এর তথ্য মুছে যায়।'},
-  {q:'1 KB সমান কত Byte?',options:['100 Byte','512 Byte','1000 Byte','1024 Byte'],answer:3,exp:'1 KB = 1024 Byte।'},
-  {q:'তথ্য স্থায়ীভাবে কোথায় সংরক্ষণ করা হয়?',options:['RAM-এ','Cache-এ','Hard Disk-এ','Register-এ'],answer:2,exp:'Hard Disk স্থায়ী সংরক্ষণের জায়গা।'},
-  {q:'MS Word কী ধরনের সফটওয়্যার?',options:['Spreadsheet','Word Processing','Presentation','Database'],answer:1,exp:'MS Word দিয়ে লেখালেখির কাজ করা হয়।'},
-  {q:'নিচের কোনটি ইন্টারনেট ব্রাউজার?',options:['MS Word','Chrome','Excel','Paint'],answer:1,exp:'Chrome দিয়ে ওয়েবসাইট দেখা হয়।'},
-  {q:'কম্পিউটারে 0 আর 1 দিয়ে কী বোঝানো হয়?',options:['Decimal digit','Binary digit','Roman digit','Hex digit'],answer:1,exp:'কম্পিউটার 0 আর 1 — Binary — দিয়ে কাজ করে।'},
-  {q:'নিচের কোনটি হার্ডওয়্যার নয়?',options:['Mouse','Monitor','Windows','Keyboard'],answer:2,exp:'Windows সফটওয়্যার, বাকিগুলো হার্ডওয়্যার।'} ]},
-{ id:'chem10-1', cls:'10', subject:'Chemistry', title:'Class 10 Chemistry — Set 1', desc:'Atoms, symbols, acids & everyday chemistry.',
+  {q:'What is the full form of CPU?',options:['Central Processing Unit','Computer Personal Unit','Central Program Unit','Computer Processing Unit'],answer:0,exp:'CPU = Central Processing Unit — the brain of the computer.'},
+  {q:'Which of the following is an input device?',options:['Monitor','Printer','Keyboard','Speaker'],answer:2,exp:'A keyboard is used to enter information into the computer.'},
+  {q:'Which of the following is an output device?',options:['Mouse','Scanner','Monitor','Keyboard'],answer:2,exp:'The result is seen on the monitor.'},
+  {q:'What kind of memory is RAM?',options:['Permanent memory','Temporary memory','Read-only memory','External memory'],answer:1,exp:'RAM is temporary — its data is erased when the power is off.'},
+  {q:'How many bytes are in 1 KB?',options:['100 bytes','512 bytes','1000 bytes','1024 bytes'],answer:3,exp:'1 KB = 1024 bytes.'},
+  {q:'Where is data stored permanently?',options:['In RAM','In Cache','In Hard Disk','In Register'],answer:2,exp:'The hard disk is for permanent storage.'},
+  {q:'What type of software is MS Word?',options:['Spreadsheet','Word Processing','Presentation','Database'],answer:1,exp:'MS Word is used for writing documents.'},
+  {q:'Which of the following is an internet browser?',options:['MS Word','Chrome','Excel','Paint'],answer:1,exp:'Websites are viewed with Chrome.'},
+  {q:'What do 0 and 1 represent in a computer?',options:['Decimal digit','Binary digit','Roman digit','Hex digit'],answer:1,exp:'A computer works with 0 and 1 — binary digits.'},
+  {q:'Which of the following is NOT hardware?',options:['Mouse','Monitor','Windows','Keyboard'],answer:2,exp:'Windows is software; the rest are hardware.'} ]},
+{ id:'chem10-1', cls:'10', subject:'Chemistry', title:'Class 10 Chemistry — Set 1', desc:'Atoms, symbols, acids & everyday chemistry. English Version.',
   questions:[
-  {q:'পানির রাসায়নিক সংকেত কোনটি?',options:['CO₂','H₂O','O₂','NaCl'],answer:1,exp:'পানি = H₂O — দুটি হাইড্রোজেন আর একটি অক্সিজেন।'},
-  {q:'কার্বনের পারমাণবিক সংখ্যা কত?',options:['4','6','8','12'],answer:1,exp:'কার্বনের পারমাণবিক সংখ্যা 6।'},
-  {q:'NaCl-কে আমরা কী নামে চিনি?',options:['চুন','খাবার লবণ','বেকিং সোডা','ভিনেগার'],answer:1,exp:'NaCl = সোডিয়াম ক্লোরাইড = খাবার লবণ।'},
-  {q:'নিরপেক্ষ দ্রবণের pH কত?',options:['0','5','7','14'],answer:2,exp:'pH 7 মানে নিরপেক্ষ — বিশুদ্ধ পানির pH 7।'},
-  {q:'জ্বলতে কোন গ্যাস দরকার হয়?',options:['নাইট্রোজেন','কার্বন ডাই-অক্সাইড','অক্সিজেন','হাইড্রোজেন'],answer:2,exp:'অক্সিজেন ছাড়া আগুন জ্বলে না।'},
-  {q:'Fe কোন মৌলের প্রতীক?',options:['সিসা','লোহা','ফ্লোরিন','তামা'],answer:1,exp:'Fe = Iron = লোহা।'},
-  {q:'লেবুতে কোন এসিড থাকে?',options:['অ্যাসিটিক এসিড','সাইট্রিক এসিড','সালফিউরিক এসিড','হাইড্রোক্লোরিক এসিড'],answer:1,exp:'লেবুতে সাইট্রিক এসিড থাকে।'},
-  {q:'কার্বন ডাই-অক্সাইডের সংকেত কোনটি?',options:['CO','CO₂','O₂','C₂O'],answer:1,exp:'কার্বন ডাই-অক্সাইড = CO₂।'},
-  {q:'নিচের কোনটি ধাতু?',options:['অক্সিজেন','নাইট্রোজেন','লোহা','হাইড্রোজেন'],answer:2,exp:'লোহা ধাতু, বাকিগুলো অধাতু/গ্যাস।'},
-  {q:'হাইড্রোজেনের পারমাণবিক সংখ্যা কত?',options:['1','2','3','4'],answer:0,exp:'হাইড্রোজেনের পারমাণবিক সংখ্যা 1।'} ]}
+  {q:'What is the chemical formula of water?',options:['CO2','H2O','O2','NaCl'],answer:1,exp:'Water = H2O — two hydrogen atoms and one oxygen atom.'},
+  {q:'What is the atomic number of carbon?',options:['4','6','8','12'],answer:1,exp:'The atomic number of carbon is 6.'},
+  {q:'What do we call NaCl?',options:['Lime','Table salt','Baking soda','Vinegar'],answer:1,exp:'NaCl = sodium chloride = table salt.'},
+  {q:'What is the pH of a neutral solution?',options:['0','5','7','14'],answer:2,exp:'pH 7 means neutral — the pH of pure water is 7.'},
+  {q:'Which gas is needed for burning?',options:['Nitrogen','Carbon dioxide','Oxygen','Hydrogen'],answer:2,exp:'Fire cannot burn without oxygen.'},
+  {q:'Fe is the symbol of which element?',options:['Lead','Iron','Fluorine','Copper'],answer:1,exp:'Fe = Iron.'},
+  {q:'Which acid is found in lemon?',options:['Acetic acid','Citric acid','Sulfuric acid','Hydrochloric acid'],answer:1,exp:'Lemon contains citric acid.'},
+  {q:'What is the formula of carbon dioxide?',options:['CO','CO2','O2','C2O'],answer:1,exp:'Carbon dioxide = CO2.'},
+  {q:'Which of the following is a metal?',options:['Oxygen','Nitrogen','Iron','Hydrogen'],answer:2,exp:'Iron is a metal; the rest are non-metals/gases.'},
+  {q:'What is the atomic number of hydrogen?',options:['1','2','3','4'],answer:0,exp:'The atomic number of hydrogen is 1.'} ]}
 ];
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
