@@ -248,3 +248,10 @@ button.btn{font:inherit;cursor:pointer}
 .bnav a{color:var(--muted)}
 .bnav a.on{color:var(--red);background:var(--red-tint)}
 @media(max-width:420px){.tile{font-size:.92rem;min-height:104px}.tile-ic{width:38px;height:38px}}
+
+/* desktop nav: 13 items must fit one row — wider bar, tighter links */
+@media(min-width:900px){
+  .bar{max-width:1280px}
+  #menu a{padding:10px 8px;font-size:.88rem;white-space:nowrap}
+  .logo{width:150px;flex:0 0 auto}
+}

@@ -125,7 +125,7 @@ chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1
 };
 const TILES = [['qbank','tile_qbank','#qbank','book'],['class','tile_class','#courses','users'],['mcq','tile_exam','#mcq','exam'],['all','tile_pdf','#all','pdf'],['notice','tile_notice','#notice','notice'],['contact','tile_contact','#contact','chat']];
 const tilesHtml = () => `<div class="tiles">${TILES.map(([,k,h,ic])=>`<a class="tile" href="${h}"><span class="tile-ic">${TILE_ICONS[ic]}</span><span>${t(k)}</span></a>`).join('')}</div>`;
-const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en', mcq:{ setId:null, answers:{}, submitted:false, name:'' } };
+const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='en' ? 'en' : 'bn', mcq:{ setId:null, answers:{}, submitted:false, name:'' } };
 const mcqSet = () => MCQ_SETS.find(s=>s.id===state.mcq.setId) || null;
 const mcqLast = id => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); return v[id]||null; }catch(e){ return null; } };
 const mcqSaveLast = (id,score,total) => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); v[id]={score,total,at:Date.now()}; store.set('beyond-mcq-last',JSON.stringify(v)); }catch(e){} };
