@@ -4,8 +4,8 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['wall','nav_wall'],['saved','nav_saved']];
-const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['search','nav_search'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['ask','nav_ask'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
+const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['mcq','nav_mcq'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
 const SUBJECTS = ['Bangla','English','Math','Science','Biology','Chemistry'];
@@ -16,9 +16,44 @@ const SUB_ALIAS = { Bangla:['bangla','bengali','বাংলা'], English:['eng
 const WALL_CATS = ['A Thought for Today',"A Teacher's Note",'Words of Encouragement','Ask Yourself','Beyond Books','Curiosity Corner','Life Lessons','Questions Worth Asking'];
 const POP = ['Acid','Tag Questions','Suggestion','Chapter 5','MCQ','Practical'];
 const NEW_DAYS = 7;
+/* ---------- MCQ exam sets ----------
+   Sample sets to start with. Each question: q, options (4), answer = index of the
+   correct option (0-3), exp = short explanation shown in the result.
+   To add a set, copy one set object, change id/title/questions. */
+const MCQ_SETS = [
+{ id:'ict8-1', cls:'8', subject:'ICT', title:'Class 8 ICT — Set 1', desc:'Computer, memory, input & output devices.',
+  questions:[
+  {q:'CPU-এর পূর্ণরূপ কোনটি?',options:['Central Processing Unit','Computer Personal Unit','Central Program Unit','Computer Processing Unit'],answer:0,exp:'CPU = Central Processing Unit — কম্পিউটারের মস্তিষ্ক।'},
+  {q:'নিচের কোনটি ইনপুট ডিভাইস?',options:['Monitor','Printer','Keyboard','Speaker'],answer:2,exp:'Keyboard দিয়ে তথ্য কম্পিউটারে ঢোকানো হয়।'},
+  {q:'নিচের কোনটি আউটপুট ডিভাইস?',options:['Mouse','Scanner','Monitor','Keyboard'],answer:2,exp:'Monitor-এ ফলাফল দেখা যায়।'},
+  {q:'RAM কেমন মেমোরি?',options:['স্থায়ী মেমোরি','অস্থায়ী মেমোরি','শুধু পড়া যায়','বাইরের মেমোরি'],answer:1,exp:'RAM অস্থায়ী — বিদ্যুৎ বন্ধ হলে এর তথ্য মুছে যায়।'},
+  {q:'1 KB সমান কত Byte?',options:['100 Byte','512 Byte','1000 Byte','1024 Byte'],answer:3,exp:'1 KB = 1024 Byte।'},
+  {q:'তথ্য স্থায়ীভাবে কোথায় সংরক্ষণ করা হয়?',options:['RAM-এ','Cache-এ','Hard Disk-এ','Register-এ'],answer:2,exp:'Hard Disk স্থায়ী সংরক্ষণের জায়গা।'},
+  {q:'MS Word কী ধরনের সফটওয়্যার?',options:['Spreadsheet','Word Processing','Presentation','Database'],answer:1,exp:'MS Word দিয়ে লেখালেখির কাজ করা হয়।'},
+  {q:'নিচের কোনটি ইন্টারনেট ব্রাউজার?',options:['MS Word','Chrome','Excel','Paint'],answer:1,exp:'Chrome দিয়ে ওয়েবসাইট দেখা হয়।'},
+  {q:'কম্পিউটারে 0 আর 1 দিয়ে কী বোঝানো হয়?',options:['Decimal digit','Binary digit','Roman digit','Hex digit'],answer:1,exp:'কম্পিউটার 0 আর 1 — Binary — দিয়ে কাজ করে।'},
+  {q:'নিচের কোনটি হার্ডওয়্যার নয়?',options:['Mouse','Monitor','Windows','Keyboard'],answer:2,exp:'Windows সফটওয়্যার, বাকিগুলো হার্ডওয়্যার।'} ]},
+{ id:'chem10-1', cls:'10', subject:'Chemistry', title:'Class 10 Chemistry — Set 1', desc:'Atoms, symbols, acids & everyday chemistry.',
+  questions:[
+  {q:'পানির রাসায়নিক সংকেত কোনটি?',options:['CO₂','H₂O','O₂','NaCl'],answer:1,exp:'পানি = H₂O — দুটি হাইড্রোজেন আর একটি অক্সিজেন।'},
+  {q:'কার্বনের পারমাণবিক সংখ্যা কত?',options:['4','6','8','12'],answer:1,exp:'কার্বনের পারমাণবিক সংখ্যা 6।'},
+  {q:'NaCl-কে আমরা কী নামে চিনি?',options:['চুন','খাবার লবণ','বেকিং সোডা','ভিনেগার'],answer:1,exp:'NaCl = সোডিয়াম ক্লোরাইড = খাবার লবণ।'},
+  {q:'নিরপেক্ষ দ্রবণের pH কত?',options:['0','5','7','14'],answer:2,exp:'pH 7 মানে নিরপেক্ষ — বিশুদ্ধ পানির pH 7।'},
+  {q:'জ্বলতে কোন গ্যাস দরকার হয়?',options:['নাইট্রোজেন','কার্বন ডাই-অক্সাইড','অক্সিজেন','হাইড্রোজেন'],answer:2,exp:'অক্সিজেন ছাড়া আগুন জ্বলে না।'},
+  {q:'Fe কোন মৌলের প্রতীক?',options:['সিসা','লোহা','ফ্লোরিন','তামা'],answer:1,exp:'Fe = Iron = লোহা।'},
+  {q:'লেবুতে কোন এসিড থাকে?',options:['অ্যাসিটিক এসিড','সাইট্রিক এসিড','সালফিউরিক এসিড','হাইড্রোক্লোরিক এসিড'],answer:1,exp:'লেবুতে সাইট্রিক এসিড থাকে।'},
+  {q:'কার্বন ডাই-অক্সাইডের সংকেত কোনটি?',options:['CO','CO₂','O₂','C₂O'],answer:1,exp:'কার্বন ডাই-অক্সাইড = CO₂।'},
+  {q:'নিচের কোনটি ধাতু?',options:['অক্সিজেন','নাইট্রোজেন','লোহা','হাইড্রোজেন'],answer:2,exp:'লোহা ধাতু, বাকিগুলো অধাতু/গ্যাস।'},
+  {q:'হাইড্রোজেনের পারমাণবিক সংখ্যা কত?',options:['1','2','3','4'],answer:0,exp:'হাইড্রোজেনের পারমাণবিক সংখ্যা 1।'} ]}
+];
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
-en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',
+en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',nav_mcq:'MCQ Exam',nav_contact:'Contact Us',
+notice_h:'BEYOND Notice',notice_empty:'New resources and exam news will appear here.',
+courses_h:'Learn by class',courses_sub:'Pick your class and start — notes, questions and practice, chapter by chapter.',
+mcq_h:'MCQ Exam',mcq_sub:'Practice with exam-style MCQs. All questions are on one page, top to bottom — answer them all, submit, and see your marks at once.',
+mcq_sets:'Choose a set',mcq_q:'questions',mcq_marks:'marks',mcq_start:'Start exam →',mcq_name:'Your name (optional)',mcq_answered:'Answered',mcq_submit:'Submit exam',mcq_result:'Your result',mcq_out_of:'out of',mcq_correct:'Correct',mcq_wrong:'Wrong',mcq_notanswered:'Not answered',mcq_your:'Your answer',mcq_right:'Correct answer',mcq_retry:'Try again',mcq_back:'← Back to all sets',mcq_last:'Last score',mcq_sample:'Sample set — more sets coming soon',
+contact_h:'Contact Us',contact_sub:'Send a message, feedback or a suggestion — your teacher will read it.',
 all_h:'All Files',all_sub:'Every resource in one place — filter by class, subject, chapter or type.',
 sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all files →',
 hero_h1:'Welcome to BEYOND',hero_h2:'More than books. More than grades. More than yesterday.',hero_p:'A free learning space where you can explore educational resources, practice questions, develop curiosity, and keep growing.',
@@ -44,7 +79,12 @@ empty_wall_t:'The wall is quiet for now',empty_wall_m:'New words will appear her
 saved_h:'Saved resources',saved_sub:'Your saved resources, kept in this browser.',
 saved_empty_t:'Nothing saved yet',saved_empty_m:'Tap Save on any resource to keep it here.',
 cls:'Class',subject:'Subject',chapter:'Chapter',type:'Type' },
-bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',
+bn:{ nav_home:'হোম',nav_all:'সব ফাইল',nav_class8:'ক্লাস ৮',nav_class9:'ক্লাস ৯',nav_class10:'ক্লাস ১০',nav_qbank:'প্রশ্ন ব্যাংক',nav_exam:'পরীক্ষার রিসোর্স',nav_extra:'অতিরিক্ত রিসোর্স',nav_wall:'দেয়ালের কথা',nav_saved:'সেভ করা',nav_search:'খুঁজুন',nav_mcq:'MCQ পরীক্ষা',nav_contact:'যোগাযোগ',
+notice_h:'BEYOND নোটিশ',notice_empty:'নতুন রিসোর্স আর পরীক্ষার খবর এখানে দেখা যাবে।',
+courses_h:'ক্লাস অনুযায়ী শেখো',courses_sub:'তোমার ক্লাস বেছে নাও আর শুরু করো — নোট, প্রশ্ন আর প্র্যাকটিস, অধ্যায় অনুযায়ী।',
+mcq_h:'MCQ পরীক্ষা',mcq_sub:'পরীক্ষার মতো MCQ দিয়ে প্র্যাকটিস করো। সব প্রশ্ন এক পেজে, উপর থেকে নিচে থাকবে — সবগুলোর উত্তর দিয়ে সাবমিট করলেই মার্কস দেখতে পাবে।',
+mcq_sets:'সেট বেছে নাও',mcq_q:'টি প্রশ্ন',mcq_marks:'মার্কস',mcq_start:'পরীক্ষা শুরু করো →',mcq_name:'তোমার নাম (ঐচ্ছিক)',mcq_answered:'উত্তর দিয়েছো',mcq_submit:'পরীক্ষা জমা দাও',mcq_result:'তোমার ফলাফল',mcq_out_of:'এর মধ্যে',mcq_correct:'সঠিক',mcq_wrong:'ভুল',mcq_notanswered:'উত্তর দাওনি',mcq_your:'তোমার উত্তর',mcq_right:'সঠিক উত্তর',mcq_retry:'আবার চেষ্টা করো',mcq_back:'← সব সেটে ফিরে যাও',mcq_last:'শেষ স্কোর',mcq_sample:'নমুনা সেট — আরও সেট শীঘ্রই আসছে',
+contact_h:'যোগাযোগ',contact_sub:'মেসেজ, মতামত বা পরামর্শ পাঠাও — তোমার শিক্ষক পড়বেন।',
 all_h:'সব ফাইল',all_sub:'সব রিসোর্স এক জায়গায় — ক্লাস, বিষয়, অধ্যায় বা ধরন দিয়ে ফিল্টার করো।',
 sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অনুযায়ী (A–Z)',view_all:'সব ফাইল দেখুন →',
 hero_h1:'BEYOND-এ স্বাগতম',hero_h2:'বইয়ের চেয়ে বেশি। গ্রেডের চেয়ে বেশি। গতকালের চেয়ে বেশি।',hero_p:'একটি ফ্রি শেখার জায়গা — এখানে পড়ার রিসোর্স, প্র্যাকটিস প্রশ্ন পাবে, কৌতূহল বাড়বে আর এগিয়ে যাবে।',
@@ -72,7 +112,10 @@ saved_empty_t:'এখনো কিছু সেভ করোনি',saved_empty_
 cls:'ক্লাস',subject:'বিষয়',chapter:'অধ্যায়',type:'ধরন' }
 };
 const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
-const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en' };
+const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('beyond-lang')==='bn' ? 'bn' : 'en', mcq:{ setId:null, answers:{}, submitted:false, name:'' } };
+const mcqSet = () => MCQ_SETS.find(s=>s.id===state.mcq.setId) || null;
+const mcqLast = id => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); return v[id]||null; }catch(e){ return null; } };
+const mcqSaveLast = (id,score,total) => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); v[id]={score,total,at:Date.now()}; store.set('beyond-mcq-last',JSON.stringify(v)); }catch(e){} };
 const t = (k,v) => { let s=(STR[state.lang]&&STR[state.lang][k])||STR.en[k]||k; if(v) for(const key in v) s=s.split('{'+key+'}').join(v[key]); return s; };
 const num = n => state.lang==='bn' ? String(n).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d]) : String(n);
 const rc = n => n===1 ? t('resources_one') : t('resources',{n});
@@ -211,12 +254,30 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['contact','nav_contact']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
+    /* BEYOND Notice — like AAPathshala's "Pathshala Barta": the newest
+       resources, so students see what's new at a glance. */
+    const notices=state.res.slice(0,5);
+    const noticeHtml = state.status==='loading' ? skeleton(1)
+      : notices.length ? `<div class="ticker">${notices.map(r=>`<a href="#all">• ${esc(r.title)}</a>`).join('')}</div>`
+      : `<p class="sub">${t('notice_empty')}</p>`;
+    const courseCard=n=>{
+      const count=state.res.filter(r=>r.cls===String(n)).length;
+      const subs=[...new Set(state.res.filter(r=>r.cls===String(n)).map(r=>r.grp))].filter(Boolean);
+      return `<article class="course"><span class="course-n">${num(n)}</span><h3>${t('cls')} ${num(n)}</h3>
+      <p>${rc(count)}${subs.length?' · '+subs.join(', '):''}</p>
+      <a class="btn" href="#class${n}">${t('cls')} ${num(n)} →</a></article>`;
+    };
     return `<section class="hero"><div class="in"><h1>${t('hero_h1')}</h1><h2>${t('hero_h2')}</h2>
     <p>${t('hero_p')}</p>${sform()}${pop}</div></section>
+    <section class="notice"><div class="wrap"><h2>📢 ${t('notice_h')}</h2>${noticeHtml}</div></section>
     <section class="wrap"><div class="quick">${quick.map(([h,k])=>`<a class="qa" href="#${h}">${t(k)}</a>`).join('')}</div>
+    <h2>${t('courses_h')}</h2><p class="sub">${t('courses_sub')}</p>
+    <div class="course-grid">${courseCard(8)}${courseCard(9)}${courseCard(10)}
+    <article class="course mcq-card"><span class="course-n">?</span><h3>${t('nav_mcq')}</h3>
+    <p>${t('mcq_sub')}</p><a class="btn" href="#mcq">${t('mcq_start')}</a></article></div>
     <h2>${t('subjects')}</h2>${cls(8)}${cls(9)}${cls(10)}
     <div class="sec"><h2>${t('recent')}</h2></div>${body(recent.length?`<div class="grid">${recent.map(card).join('')}</div>`:empty(t('no_res_t'),t('no_res_m')),CONFIG.RECENT)}<p class="more"><a href="#all">${t('view_all')}</a></p></section>`;
   },
@@ -253,6 +314,63 @@ const V = {
   ask(){
     const GF='https://docs.google.com/forms/d/e/1FAIpQLSdsyC6OU35gbcDId3SC5JY8Gb-rp8RHGwzmRqCGeGX3iJP_Bg/viewform?embedded=true';
     return `<section class="wrap narrow"><h1>${t('ask_h')}</h1><p class="sub">${t('ask_sub')}</p>
+    <iframe class="gform-embed" src="${GF}" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
+  },
+  /* MCQ Exam: all questions on one page, top to bottom. Submit once at
+     the bottom — marks + correct/wrong review appear right away. */
+  mcq(){
+    const set=mcqSet();
+    if(!set){
+      const cards=MCQ_SETS.map(s=>{
+        const last=mcqLast(s.id);
+        return `<article class="course"><span class="course-n">${num(s.cls)}</span><h3>${esc(s.title)}</h3>
+        <p>${esc(s.desc)}</p><p class="meta">${s.questions.length} ${t('mcq_q')} · ${s.questions.length} ${t('mcq_marks')}</p>
+        ${last?`<p class="meta">${t('mcq_last')}: ${num(last.score)}/${num(last.total)}</p>`:''}
+        <button type="button" class="btn" data-mcq-set="${esc(s.id)}">${t('mcq_start')}</button></article>`;
+      }).join('');
+      return `<section class="wrap"><h1>${t('mcq_h')}</h1><p class="sub">${t('mcq_sub')}</p>
+      <p class="sub">${t('mcq_sample')}</p><div class="course-grid">${cards}</div></section>`;
+    }
+    const m=state.mcq, total=set.questions.length;
+    if(m.submitted){
+      let score=0;
+      const review=set.questions.map((qq,i)=>{
+        const picked=m.answers[i];
+        const ok=picked===qq.answer;
+        if(ok) score++;
+        const cls2=picked==null?'unans':ok?'ok':'bad';
+        const your=picked==null?t('mcq_notanswered'):esc(qq.options[picked]);
+        return `<div class="q ${cls2}"><p><strong>${num(i+1)}.</strong> ${esc(qq.q)}</p>
+        <p class="meta">${t('mcq_your')}: <strong>${your}</strong></p>
+        <p class="meta">${t('mcq_right')}: <strong>${esc(qq.options[qq.answer])}</strong></p>
+        ${qq.exp?`<p class="meta">${esc(qq.exp)}</p>`:''}</div>`;
+      }).join('');
+      const pct=Math.round(score/total*100);
+      return `<section class="wrap narrow2"><div class="result"><h1>${t('mcq_result')}</h1>
+      <p class="score"><strong>${num(score)}</strong> / ${num(total)}</p>
+      <p>${num(pct)}% · ${num(score)} ${t('mcq_correct')} · ${num(total-score)} ${t('mcq_wrong')}</p>
+      ${m.name?`<p class="meta">${esc(m.name)}</p>`:''}</div>
+      <div class="qlist">${review}</div>
+      <div class="actions"><button type="button" class="btn" data-mcq-retry>${t('mcq_retry')}</button>
+      <button type="button" class="btn ghost" data-mcq-back>${t('mcq_back')}</button></div></section>`;
+    }
+    const answered=Object.keys(m.answers).length;
+    const qs=set.questions.map((qq,i)=>`<div class="q"><p><strong>${num(i+1)}.</strong> ${esc(qq.q)}</p>
+      <div class="opts">${qq.options.map((o,j)=>`<label><input type="radio" name="mq${i}" value="${j}" data-mcq-q="${i}"${m.answers[i]===j?' checked':''}> ${esc(o)}</label>`).join('')}</div></div>`).join('');
+    return `<section class="wrap narrow2"><h1>${esc(set.title)}</h1><p class="sub">${esc(set.desc)} · ${total} ${t('mcq_q')} · ${total} ${t('mcq_marks')}</p>
+    <label class="mcq-name">${t('mcq_name')}<input type="text" id="mcqname" value="${esc(m.name)}" placeholder=""></label>
+    <p class="count" id="mcqcount">${t('mcq_answered')}: ${num(answered)} / ${num(total)}</p>
+    <div class="qlist">${qs}</div>
+    <div class="actions"><button type="button" class="btn" data-mcq-submit>${t('mcq_submit')}</button>
+    <button type="button" class="btn ghost" data-mcq-back>${t('mcq_back')}</button></div></section>`;
+  },
+  /* Contact Us: the real Google Form embedded in the page (same lesson as
+     Ask Your Teacher — posts from our own form never land in Google,
+     submitting on Google's own form page always does). Messages land in
+     the "Contact Us — BEYOND" form's Responses tab. */
+  contact(){
+    const GF='https://docs.google.com/forms/d/e/1FAIpQLScUcDm0rJ83QPwM5SW0pZ-Ns2pvBhs3nJFg0WTLPosXSarn3g/viewform?embedded=true';
+    return `<section class="wrap narrow"><h1>${t('contact_h')}</h1><p class="sub">${t('contact_sub')}</p>
     <iframe class="gform-embed" src="${GF}" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
   },
   saved(){
@@ -292,6 +410,8 @@ function render(){
   let html;
   if(name==='home') html=V.home();
   else if(name==='ask') html=V.ask();
+  else if(name==='mcq') html=V.mcq();
+  else if(name==='contact') html=V.contact();
   else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||t('nav_search'))}</h1>${body('',3)}</section>`;
   else if(name.startsWith('class')) html=V.classView(name.slice(5));
   else html=V[name]();
@@ -323,8 +443,20 @@ function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){
 /* ---------- events ---------- */
 function setMenu(o){ document.body.classList.toggle('open',o); $('#burger').setAttribute('aria-expanded',o); $('#burger').setAttribute('aria-label',o?'Close menu':'Open menu'); }
 document.addEventListener('click',e=>{
-  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],[data-chapter],#burger,#scrim,#menu a,#langbtn');
+  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],[data-chapter],[data-mcq-set],[data-mcq-submit],[data-mcq-retry],[data-mcq-back],#burger,#scrim,#menu a,#langbtn');
   if(!el) return;
+  if(el.dataset.mcqSet!==undefined){ state.mcq={setId:el.dataset.mcqSet,answers:{},submitted:false,name:''}; if(location.hash==='#mcq') render(); else location.hash='mcq'; return; }
+  if(el.dataset.mcqBack!==undefined){ state.mcq={setId:null,answers:{},submitted:false,name:''}; return render(); }
+  if(el.dataset.mcqRetry!==undefined){ const id=state.mcq.setId; state.mcq={setId:id,answers:{},submitted:false,name:state.mcq.name}; return render(); }
+  if(el.dataset.mcqSubmit!==undefined){
+    const set=mcqSet(); if(!set) return;
+    const nameEl=document.getElementById('mcqname'); state.mcq.name=nameEl?nameEl.value.trim():'';
+    const un=set.questions.length-Object.keys(state.mcq.answers).length;
+    if(un>0 && !confirm(state.lang==='bn'?`${num(un)}টি প্রশ্নের উত্তর দাওনি। তবুও জমা দেবে?`:`You have ${un} unanswered question(s). Submit anyway?`)) return;
+    let score=0; set.questions.forEach((qq,i)=>{ if(state.mcq.answers[i]===qq.answer) score++; });
+    mcqSaveLast(set.id,score,set.questions.length);
+    state.mcq.submitted=true; render(); window.scrollTo(0,0); return;
+  }
   if(el.id==='burger') return setMenu(!document.body.classList.contains('open'));
   if(el.id==='langbtn'){ state.lang=state.lang==='bn'?'en':'bn'; store.set('beyond-lang',state.lang); return render(); }
   if(el.dataset.chapter!==undefined){
@@ -344,6 +476,8 @@ document.addEventListener('click',e=>{
   if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class8'&&el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
 });
 document.addEventListener('change',e=>{
+  const mq=e.target.closest('input[data-mcq-q]');
+  if(mq){ state.mcq.answers[+mq.dataset.mcqQ]=+mq.value; const set=mcqSet(); const c=document.getElementById('mcqcount'); if(set&&c) c.textContent=t('mcq_answered')+': '+num(Object.keys(state.mcq.answers).length)+' / '+num(set.questions.length); return; }
   const s=e.target.closest('select[data-k]');
   if(s){ (state.f[s.dataset.v]=state.f[s.dataset.v]||{})[s.dataset.k]=s.value; return render(); }
   const so=e.target.closest('select[data-sort]');

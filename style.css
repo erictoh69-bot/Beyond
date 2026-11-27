@@ -188,3 +188,41 @@ button.btn{font:inherit;cursor:pointer}
 .gform-embed{width:100%;min-height:820px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
 .more{margin:16px 0 0}
 .more a{font-weight:700;text-decoration:none}
+
+/* ---- AAPathshala-style home: notice + course cards ---- */
+.notice{background:#FFF7E0;border-bottom:1px solid #F0DFA8}
+.notice .wrap{padding-top:18px;padding-bottom:18px}
+.notice h2{font-size:1.05rem;margin-bottom:8px}
+.ticker{display:flex;gap:18px;flex-wrap:wrap}
+.ticker a{color:var(--navy);text-decoration:none;font-weight:600;font-size:.95rem}
+.ticker a:hover{text-decoration:underline}
+.course-grid{display:grid;gap:14px;grid-template-columns:1fr;margin-bottom:28px}
+@media(min-width:640px){.course-grid{grid-template-columns:repeat(2,1fr)}}
+.course{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:6px}
+.course h3{font-size:1.25rem;margin:0}
+.course p{margin:0;color:var(--muted);font-size:.92rem}
+.course .btn{align-self:flex-start;margin-top:8px}
+.course-n{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;font-size:1.3rem}
+.mcq-card{background:linear-gradient(160deg,var(--navy),var(--navy2));border-color:var(--navy)}
+.mcq-card h3,.mcq-card p{color:#fff}
+.mcq-card p{color:#D4E2F1}
+.mcq-card .course-n{background:var(--cyan);color:var(--navy)}
+
+/* ---- MCQ exam ---- */
+.wrap.narrow2{max-width:760px}
+.mcq-name{display:grid;gap:6px;font-weight:600;font-size:.92rem;margin-bottom:8px}
+.mcq-name input{font:inherit;color:var(--text);padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.qlist{display:grid;gap:14px;margin:18px 0}
+.q{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.q p{margin:0 0 10px}
+.opts{display:grid;gap:8px}
+.opts label{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:.95rem}
+.opts label:has(input:checked){border-color:var(--cyan);background:var(--tint)}
+.opts input{margin-top:4px;accent-color:var(--cyan-d);width:18px;height:18px}
+.q.ok{border-color:#2E9E5B;background:#F0FAF3}
+.q.bad{border-color:#E53935;background:#FDF0F0}
+.q.unans{border-color:#E6A817;background:#FFFBEA}
+.result{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 20px;text-align:center;margin-bottom:18px}
+.result h1{margin-bottom:6px}
+.score{font-size:1.4rem;margin:0}
+.score strong{font-size:2.6rem;color:var(--navy)}
