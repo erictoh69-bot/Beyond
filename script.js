@@ -655,6 +655,9 @@ function render(){
   const lb=$('#langbtn'); if(lb) lb.textContent=state.lang==='bn'?'EN':'বাংলা';
   const ft=$('#foot'); if(ft) ft.textContent=t('footer');
   setMenu(false);
+  /* Fill the countdown immediately on every render, so it never
+     sits on "–" dashes for a second after navigating. */
+  tickCd();
 }
 let lastView='';
 function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){ if(v==='#courses'||v==='#notice'){ const el=document.querySelector(v); if(el) el.scrollIntoView(); else window.scrollTo(0,0); } else window.scrollTo(0,0); lastView=v; } }
