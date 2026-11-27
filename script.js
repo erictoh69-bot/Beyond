@@ -21,31 +21,31 @@ const NEW_DAYS = 7;
    correct option (0-3), exp = short explanation shown in the result.
    To add a set, copy one set object, change id/title/questions. */
 const MCQ_SETS = [
-{ id:'ict8-1', cls:'8', subject:'ICT', title:'Class 8 ICT — Set 1', desc:'Computer, memory, input & output devices. English Version.',
+{ id:"chem-ssc-1", cls:"10", subject:"Chemistry", title:"SSC Chemistry — Set 1", desc:"From Rakib's Classroom Chemistry Practice Book — Concepts of Chemistry. English Version.",
   questions:[
-  {q:'What is the full form of CPU?',options:['Central Processing Unit','Computer Personal Unit','Central Program Unit','Computer Processing Unit'],answer:0,exp:'CPU = Central Processing Unit — the brain of the computer.'},
-  {q:'Which of the following is an input device?',options:['Monitor','Printer','Keyboard','Speaker'],answer:2,exp:'A keyboard is used to enter information into the computer.'},
-  {q:'Which of the following is an output device?',options:['Mouse','Scanner','Monitor','Keyboard'],answer:2,exp:'The result is seen on the monitor.'},
-  {q:'What kind of memory is RAM?',options:['Permanent memory','Temporary memory','Read-only memory','External memory'],answer:1,exp:'RAM is temporary — its data is erased when the power is off.'},
-  {q:'How many bytes are in 1 KB?',options:['100 bytes','512 bytes','1000 bytes','1024 bytes'],answer:3,exp:'1 KB = 1024 bytes.'},
-  {q:'Where is data stored permanently?',options:['In RAM','In Cache','In Hard Disk','In Register'],answer:2,exp:'The hard disk is for permanent storage.'},
-  {q:'What type of software is MS Word?',options:['Spreadsheet','Word Processing','Presentation','Database'],answer:1,exp:'MS Word is used for writing documents.'},
-  {q:'Which of the following is an internet browser?',options:['MS Word','Chrome','Excel','Paint'],answer:1,exp:'Websites are viewed with Chrome.'},
-  {q:'What do 0 and 1 represent in a computer?',options:['Decimal digit','Binary digit','Roman digit','Hex digit'],answer:1,exp:'A computer works with 0 and 1 — binary digits.'},
-  {q:'Which of the following is NOT hardware?',options:['Mouse','Monitor','Windows','Keyboard'],answer:2,exp:'Windows is software; the rest are hardware.'} ]},
-{ id:'chem10-1', cls:'10', subject:'Chemistry', title:'Class 10 Chemistry — Set 1', desc:'Atoms, symbols, acids & everyday chemistry. English Version.',
+  {q:"Who is called the father of modern chemistry? Or, which scientist is called the father of modern chemistry?",options:["Niels Bohr","Lavoisier","Democritus","Jabir ibn Hayyan"],answer:1,exp:"Antoine Lavoisier began the practice of chemistry to uncover the true mystery of chemistry, so he is called the father of modern chemistry. Jabir ibn Hayyan is the father of chemistry (not modern); Democritus gave the idea of the atom."},
+  {q:"Which metal was first used by humans in ancient times?",options:["Copper","Gold","Silver","Tin"],answer:0,exp:"According to the information found so far, the first metal used by humans is copper. Gold, silver, tin and iron have been used since ancient times, but they were not the first."},
+  {q:"Which element is present in wax? Or, which element is present in wax along with carbon?",options:["Chlorine","Hydrogen","Oxygen","Nitrogen"],answer:1,exp:"Wax is a hydrocarbon, that is, a compound of carbon and hydrogen. So in wax, along with carbon, the element hydrogen is present."},
+  {q:"According to the information found so far, the first metal used is —",options:["Au","Cu","Ag","Sn"],answer:1,exp:"The first metal used is copper, whose symbol is Cu. Au = gold, Ag = silver, Sn = tin."},
+  {q:"What is present in raw mango?",options:["Succinic acid","Citric acid","Tartaric acid","Lactic acid"],answer:0,exp:"Raw mango contains organic acids like succinic acid and maleic acid, so raw mango is sour."},
+  {q:"Which element is present in kerosene?",options:["Carbon","Chlorine","Oxygen","Nitrogen"],answer:0,exp:"The main ingredient of kerosene is hydrocarbon, which is formed of carbon (C) and hydrogen (H). Among the options, only carbon is present in kerosene."},
+  {q:"Raw mango contains various kinds of organic acids. When the mango ripens, what is created from these acids?",options:["Glucose and fructose","Sugar","Carbohydrate","Cellulose"],answer:0,exp:"The organic acids of raw mango (succinic, maleic) are converted into glucose and fructose by chemical change when the mango ripens. So ripe mango tastes sweet."},
+  {q:"In which ingredient is cellulose present?",options:["Polythene","Table salt","Urea","Bamboo"],answer:3,exp:"Bamboo, sugarcane bagasse, etc. contain cellulose in large amounts; paper is made from these. Polythene is a polymer (from ethylene), table salt is NaCl, urea is a fertilizer — these do not contain cellulose."},
+  {q:"What is present in paper?",options:["Fructose","Glucose","Starch","Cellulose"],answer:3,exp:"The main ingredient of paper is cellulose. Paper is made by chemically processing the cellulose of bamboo and sugarcane bagasse. Glucose, fructose and starch are not ingredients of paper."},
+  {q:"What is the cause of death of people in olautha or cholera disease?",options:["Excessive sweating","Shortage of water in the body","Fever","Deficiency of table salt"],answer:1,exp:"Most of a living being's body is water. In cholera (olautha) disease, diarrhoea and vomiting expel a large amount of water from the body, causing a shortage of water (dehydration). This dehydration is the main cause of death in cholera."},
+ ]},{ id:"ict-ssc-1", cls:"10", subject:"ICT", title:"SSC ICT — Set 1", desc:"From Raju Academy SSC ICT Suggestion — Chapter 1: ICT and Our Bangladesh. English Version.",
   questions:[
-  {q:'What is the chemical formula of water?',options:['CO2','H2O','O2','NaCl'],answer:1,exp:'Water = H2O — two hydrogen atoms and one oxygen atom.'},
-  {q:'What is the atomic number of carbon?',options:['4','6','8','12'],answer:1,exp:'The atomic number of carbon is 6.'},
-  {q:'What do we call NaCl?',options:['Lime','Table salt','Baking soda','Vinegar'],answer:1,exp:'NaCl = sodium chloride = table salt.'},
-  {q:'What is the pH of a neutral solution?',options:['0','5','7','14'],answer:2,exp:'pH 7 means neutral — the pH of pure water is 7.'},
-  {q:'Which gas is needed for burning?',options:['Nitrogen','Carbon dioxide','Oxygen','Hydrogen'],answer:2,exp:'Fire cannot burn without oxygen.'},
-  {q:'Fe is the symbol of which element?',options:['Lead','Iron','Fluorine','Copper'],answer:1,exp:'Fe = Iron.'},
-  {q:'Which acid is found in lemon?',options:['Acetic acid','Citric acid','Sulfuric acid','Hydrochloric acid'],answer:1,exp:'Lemon contains citric acid.'},
-  {q:'What is the formula of carbon dioxide?',options:['CO','CO2','O2','C2O'],answer:1,exp:'Carbon dioxide = CO2.'},
-  {q:'Which of the following is a metal?',options:['Oxygen','Nitrogen','Iron','Hydrogen'],answer:2,exp:'Iron is a metal; the rest are non-metals/gases.'},
-  {q:'What is the atomic number of hydrogen?',options:['1','2','3','4'],answer:0,exp:'The atomic number of hydrogen is 1.'} ]}
-];
+  {q:"What is the unwritten rule of the new world?",options:["Globalization","Communication skill","Creativity","Internationalism"],answer:3,exp:""},
+  {q:"Which type of wave did scientist Jagadish Chandra Bose use to send messages without wires?",options:["Small","Wireless","Very small (1895)","Ultraviolet"],answer:2,exp:""},
+  {q:"Using which protocol was Arpanet born?",options:["http protocol","TCP/ IP protocl","Internet protocol","Server protocol"],answer:2,exp:""},
+  {q:"Which organization made the MS-DOS operating system?",options:["Canonical","Apple","Microsoft","HP"],answer:2,exp:""},
+  {q:"When was MS-DOS developed?",options:["In 1981","In 1982","In 1983","In 1984"],answer:0,exp:""},
+  {q:"Which operating system is used in most of the computers in the world?",options:["Windows","Linux","MAC","Unix"],answer:0,exp:""},
+  {q:"Who implemented information management using http?",options:["Mark Zukerberk","Tim Berners Lee","William Henry Gates","Steve Wozaniak"],answer:1,exp:""},
+  {q:"Ada Lovelace- i. Daughter of the poet Lord Byron ii. Pioneer of the concept of programming iii. Met Charles Babbage in 1833 Which of the following is correct?",options:["i and ii","i and iii","ii and iii","i, ii and iii"],answer:3,exp:""},
+  {q:"Due to the digitization of information, how much percent less time is taken in decision-making?",options:["50–60","60–70","80–90","90–100"],answer:2,exp:""},
+  {q:"As a result of using information and communication technology in government and private work at present- i. Service is available in a short time ii. The quality of service has improved iii. Service is available even on holidays Which of the following is correct?",options:["i and ii","i and iii","ii and iii","i, ii and iii"],answer:3,exp:""},
+ ]},];
 /* UI text in English and Bangla. Resource titles and descriptions stay exactly as typed in the sheet. */
 const STR = {
 en:{ nav_home:'Home',nav_all:'All Files',nav_class8:'Class 8',nav_class9:'Class 9',nav_class10:'Class 10',nav_qbank:'Question Bank',nav_exam:'Exam Resources',nav_extra:'Extra Resources',nav_wall:'Words on the Wall',nav_saved:'Saved',nav_search:'Search',nav_mcq:'MCQ Exam',nav_contact:'Contact Us',
