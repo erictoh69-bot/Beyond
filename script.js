@@ -4,7 +4,7 @@
    *_GID: the number after "gid=" in the URL when that tab is open. Used for the raw CSV export,
    which keeps every cell exactly as typed. If it is wrong or missing, the tab name is used instead. */
 const CONFIG = { SHEET_ID: '1fdNEuTcdcp4WrXALEOHjiZG9XRlX2IJXZIPwGoRj_p8', RES_TAB: 'Resources', RES_GID: '1057308780', WALL_TAB: 'Wall', WALL_GID: '372891877', RECENT: 6 };
-const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['routine','nav_routine'],['ask','nav_ask'],['submit','nav_submit'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
+const NAV = [['home','nav_home'],['all','nav_all'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['qbank','nav_qbank'],['exam','nav_exam'],['extra','nav_extra'],['mcq','nav_mcq'],['routine','nav_routine'],['ask','nav_ask'],['submit','nav_submit'],['aicheck','nav_aicheck'],['contact','nav_contact'],['wall','nav_wall'],['saved','nav_saved']];
 const BNAV = [['home','nav_home'],['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['mcq','nav_mcq'],['saved','nav_saved']];
 /* Subject buttons, in display order. Any subject in the sheet that does not match one of these
    (e.g. Physics, ICT, Higher Math) is grouped under OTHER. */
@@ -250,6 +250,7 @@ sort:'Sort',sort_new:'Newest first',sort_az:'Title A–Z',view_all:'View all fil
 hero_h1:'Learn Better Through Practice & Growth',hero_h2:'Learn Better Through<br>Practice &amp; Growth',hero_p:'Organized notes, question banks, and complete exam preparation—all in one place.',hero_tag:'Everything for Learning at BEYOND',
 tile_qbank:'Question Bank',tile_class:'Classes',tile_exam:'Exam',tile_pdf:'PDFs',tile_notice:'Notice',tile_contact:'Contact',
 nav_ask:'Ask Your Teacher',ask_h:'Ask Your Teacher',ask_sub:'Stuck on a chapter, a question or a problem? Write it here — your teacher will see it and answer.',nav_submit:'Submit Solved Copy',submit_h:'Submit Your Solved Copy',submit_sub:'Solved a resource on paper? Upload a photo of your solved copy here — your teacher will check it.',
+nav_aicheck:'AI Check',aicheck_h:'Check with AI',aicheck_sub:'Solved a question on paper? Upload a photo and AI will check it against the answer key — as practice feedback. Your teacher gives the final marks.',aicheck_note:'AI can misread handwriting. This is practice feedback, not final marks.',aicheck_set:'Choose a set',aicheck_physics:'Physics SQ (Q1–Q10)',aicheck_bangla:'Bangla CQ — আম-আঁটির ভেঁপু (Q1)',aicheck_q:'Question',aicheck_photo:'Photo of your answer',aicheck_check:'Check my answer',aicheck_checking:'Checking… this takes a few seconds',aicheck_result:'Result',aicheck_correct:'Correct',aicheck_partial:'Partly correct',aicheck_wrong:'Wrong',aicheck_out_of:'out of',aicheck_try:'Check another',aicheck_err:'Could not check. Try again.',aicheck_err_nokey:'AI check is not switched on yet — the teacher will switch it on soon.',aicheck_err_timeout:'It took too long. Check your connection and try again.',aicheck_no_photo:'First add a photo of your answer.',
 ask_name:'Your name (optional)',ask_name_ph:'e.g. Sabbir',ask_class:'Class',ask_subject:'Subject',ask_q:'Your question',ask_q_ph:'Write your question here…',ask_send:'Send question',
 ask_ok_t:'Question sent!',ask_ok_m:'Thank you — your teacher will read it and answer soon.',ask_err:'Could not send. Check your connection and try again.',
 search_ph:'Try: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'Search',popular:'Popular searches',subjects:'Subjects',recent:'Recently added',
@@ -283,6 +284,7 @@ sort:'সাজান',sort_new:'নতুন আগে',sort_az:'নাম অ�
 hero_h1:'শিক্ষায়, চর্চায় ও সাফল্যে শেখা হোক আরও সহজ',hero_h2:'শিক্ষায়, চর্চায় ও সাফল্যে<br>শেখা হোক আরও সহজ',hero_p:'গোছানো নোট, প্রশ্নব্যাংক আর পরীক্ষার সেরা প্রস্তুতি এখন এক জায়গায়।',hero_tag:'শেখার সবকিছু BEYOND-এ',
 tile_qbank:'প্রশ্নব্যাংক',tile_class:'ক্লাস',tile_exam:'পরীক্ষা',tile_pdf:'পিডিএফ',tile_notice:'নোটিশ',tile_contact:'যোগাযোগ',
 nav_ask:'শিক্ষককে জিজ্ঞেস করো',ask_h:'শিক্ষককে জিজ্ঞেস করো',ask_sub:'কোনো অধ্যায়, প্রশ্ন বা অঙ্কে আটকে গেছো? এখানে লেখো — তোমার শিক্ষক দেখবেন আর উত্তর দেবেন।',nav_submit:'Solved Copy জমা দাও',submit_h:'Solved Copy জমা দাও',submit_sub:'খাতায় solve করেছো? তোমার solved copy-র ছবি এখানে জমা দাও — তোমার শিক্ষক দেখবেন।',
+nav_aicheck:'AI যাচাই',aicheck_h:'AI দিয়ে যাচাই করো',aicheck_sub:'খাতায় প্রশ্ন solve করেছো? ছবি তুলে দাও — AI উত্তরমালার সাথে মিলিয়ে দেখবে। এটা প্র্যাকটিস ফিডব্যাক, চূড়ান্ত নম্বর তোমার শিক্ষক দেবেন।',aicheck_note:'AI হাতের লেখা ভুল পড়তে পারে। এটা প্র্যাকটিস ফিডব্যাক, চূড়ান্ত নম্বর নয়।',aicheck_set:'সেট বেছে নাও',aicheck_physics:'Physics SQ (প্রশ্ন ১–১০)',aicheck_bangla:'বাংলা CQ — আম-আঁটির ভেঁপু (প্রশ্ন ১)',aicheck_q:'প্রশ্ন',aicheck_photo:'তোমার উত্তরের ছবি',aicheck_check:'আমার উত্তর যাচাই করো',aicheck_checking:'যাচাই হচ্ছে… কয়েক সেকেন্ড লাগবে',aicheck_result:'ফলাফল',aicheck_correct:'সঠিক',aicheck_partial:'আংশিক সঠিক',aicheck_wrong:'ভুল',aicheck_out_of:'এর মধ্যে',aicheck_try:'আরেকটা যাচাই করো',aicheck_err:'যাচাই করা যায়নি। আবার চেষ্টা করো।',aicheck_err_nokey:'AI যাচাই এখনো চালু হয়নি — শিক্ষক শীঘ্রই চালু করবেন।',aicheck_err_timeout:'বেশি সময় লাগছে। ইন্টারনেট দেখে আবার চেষ্টা করো।',aicheck_no_photo:'আগে তোমার উত্তরের ছবি দাও।',
 ask_name:'তোমার নাম (ঐচ্ছিক)',ask_name_ph:'যেমন: সাব্বির',ask_class:'ক্লাস',ask_subject:'বিষয়',ask_q:'তোমার প্রশ্ন',ask_q_ph:'তোমার প্রশ্ন এখানে লেখো…',ask_send:'প্রশ্ন পাঠাও',
 ask_ok_t:'প্রশ্ন পাঠানো হয়েছে!',ask_ok_m:'ধন্যবাদ — তোমার শিক্ষক পড়বেন আর শীঘ্রই উত্তর দেবেন।',ask_err:'পাঠানো যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করো।',
 search_ph:'খুঁজুন: Chemical Bond, Digestion, Chapter 5, CQ',search_btn:'খুঁজুন',popular:'জনপ্রিয় খোঁজ',subjects:'বিষয়সমূহ',recent:'সম্প্রতি যোগ হয়েছে',
@@ -321,6 +323,39 @@ const state = { res:[], wall:[], status:'loading', q:'', f:{}, lang: store.get('
 const mcqSet = () => MCQ_SETS.find(s=>s.id===state.mcq.setId) || null;
 const mcqLast = id => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); return v[id]||null; }catch(e){ return null; } };
 const mcqSaveLast = (id,score,total) => { try{ const v=JSON.parse(store.get('beyond-mcq-last')||'{}'); v[id]={score,total,at:Date.now()}; store.set('beyond-mcq-last',JSON.stringify(v)); }catch(e){} };
+/* AI Check (pilot): question texts only — the answer keys live in
+   api/check.js on the server and are never sent to the browser. */
+const AI_PHYSICS_QS = ['What is electric induction?','What is meant by electric potential?','What is meant by potential difference?','What is meant by a capacitor?','What is meant by electric intensity?','What is meant by electric field lines?','What is meant by electric field?','What is meant by measurement?','What is meant by fundamental quantity?','What is meant by the unit of measurement?'];
+const ai = { set:'physics-sq', q:1, photo:null, result:null, status:'' };
+function aiDownscale(file, done){
+  const rd = new FileReader();
+  rd.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 1600, s = Math.min(1, max / Math.max(img.width, img.height));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      done(cv.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = () => done(rd.result);
+    img.src = rd.result;
+  };
+  rd.readAsDataURL(file);
+}
+async function runAiCheck(){
+  if(!ai.photo){ ai.status='nophoto'; return render(); }
+  ai.status='checking'; ai.result=null; render();
+  const ctrl = new AbortController();
+  const to = setTimeout(()=>ctrl.abort(), 25000);
+  try{
+    const r = await fetch('/api/check', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ set:ai.set, q:ai.q, image:ai.photo, mime:'image/jpeg' }), signal:ctrl.signal });
+    const d = await r.json().catch(()=>({}));
+    if(!r.ok) ai.status = d.error==='not_configured' ? 'nokey' : d.error==='timeout' ? 'timeout' : 'error';
+    else { ai.result = d; ai.status = 'done'; }
+  }catch(e){ ai.status = 'timeout'; }
+  clearTimeout(to); render(); window.scrollTo(0,0);
+}
 const t = (k,v) => { let s=(STR[state.lang]&&STR[state.lang][k])||STR.en[k]||k; if(v) for(const key in v) s=s.split('{'+key+'}').join(v[key]); return s; };
 const num = n => state.lang==='bn' ? String(n).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[d]) : String(n);
 const rc = n => n===1 ? t('resources_one') : t('resources',{n});
@@ -459,7 +494,7 @@ const sform = (cls='') => `<form class="sform ${cls}" role="search"><input type=
 const V = {
   home(){
     const recent=state.res.slice(0,CONFIG.RECENT);
-    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['routine','nav_routine'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['submit','nav_submit'],['contact','nav_contact']];
+    const quick=[['class8','nav_class8'],['class9','nav_class9'],['class10','nav_class10'],['all','nav_all'],['qbank','nav_qbank'],['mcq','nav_mcq'],['routine','nav_routine'],['exam','nav_exam'],['extra','nav_extra'],['ask','nav_ask'],['submit','nav_submit'],['aicheck','nav_aicheck'],['contact','nav_contact']];
     const cls=n=>`<div class="cls"><h3>${t('cls')} ${num(n)}</h3><div class="subs">${ALL_SUBJECTS.map(s=>`<button class="sc sb-${subSlug(s)}" data-go="class${n}" data-sub="${s}"><small>${t('cls')} ${num(n)}</small>${s}</button>`).join('')}</div></div>`;
     const pop=`<div class="pop"><span>${t('popular')}</span>${POP.map(q=>`<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
     /* BEYOND Notice — like AAPathshala's "Pathshala Barta": the newest
@@ -532,6 +567,37 @@ const V = {
     const GF='https://docs.google.com/forms/d/e/1FAIpQLSfB6nrVIKcFLUmVqLsHn31diC1ih6H7DiWf0bEIFCi9K74dRw/viewform?embedded=true';
     return `<section class="wrap narrow"><h1>${t('submit_h')}</h1><p class="sub">${t('submit_sub')}</p>
     <iframe class="gform-embed" src="${GF}" width="100%" height="1000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></section>`;
+  },
+  /* AI Check (pilot): student picks a set, uploads a photo of the
+     handwritten answer, and /api/check grades it against the answer
+     key on the server. The result is practice feedback only — the
+     teacher gives the final marks. */
+  aicheck(){
+    const r = ai.result;
+    let res = '';
+    if(ai.status==='checking') res = `<div class="empty"><strong>${t('aicheck_checking')}</strong></div>`;
+    else if(ai.status==='nophoto') res = `<div class="err"><strong>${t('aicheck_no_photo')}</strong></div>`;
+    else if(ai.status==='nokey') res = `<div class="err"><strong>${t('aicheck_err_nokey')}</strong></div>`;
+    else if(ai.status==='timeout') res = `<div class="err"><strong>${t('aicheck_err_timeout')}</strong></div>`;
+    else if(ai.status==='error') res = `<div class="err"><strong>${t('aicheck_err')}</strong></div>`;
+    else if(r){
+      if(r.set==='physics-sq'){
+        const v = r.verdict==='correct' ? t('aicheck_correct') : r.verdict==='wrong' ? t('aicheck_wrong') : t('aicheck_partial');
+        res = `<div class="result"><h1>${t('aicheck_result')}</h1><p class="score"><strong>${num(r.marks)}</strong> / ${num(1)}</p><p>${v} · ${esc(r.feedback||'')}</p></div><div class="actions"><button type="button" class="btn ghost" data-aicheck-reset>${t('aicheck_try')}</button></div>`;
+      } else {
+        const tot = (r.parts||[]).reduce((s,p)=>s+(+p.marks||0),0);
+        const rows = (r.parts||[]).map(p=>`<div class="q"><p><strong>${esc(p.part)}</strong> — ${num(p.marks)} ${t('aicheck_out_of')} ${num(p.out_of)}</p><p class="meta">${esc(p.feedback||'')}</p></div>`).join('');
+        res = `<div class="result"><h1>${t('aicheck_result')}</h1><p class="score"><strong>${num(tot)}</strong> / ${num(10)}</p></div><div class="qlist">${rows}</div><div class="actions"><button type="button" class="btn ghost" data-aicheck-reset>${t('aicheck_try')}</button></div>`;
+      }
+    }
+    return `<section class="wrap narrow"><h1>${t('aicheck_h')}</h1><p class="sub">${t('aicheck_sub')}</p>
+    <p class="meta">${t('aicheck_note')}</p>
+    <label class="mcq-name">${t('aicheck_set')}<select id="aiset"><option value="physics-sq"${ai.set==='physics-sq'?' selected':''}>${t('aicheck_physics')}</option><option value="bangla-cq"${ai.set==='bangla-cq'?' selected':''}>${t('aicheck_bangla')}</option></select></label>
+    ${ai.set==='physics-sq'?`<label class="mcq-name">${t('aicheck_q')}<select id="aiq">${AI_PHYSICS_QS.map((qq,i)=>`<option value="${i+1}"${ai.q===i+1?' selected':''}>${num(i+1)}. ${esc(qq)}</option>`).join('')}</select></label>`:''}
+    <label class="mcq-name">${t('aicheck_photo')}<input type="file" id="aiphoto" accept="image/*"></label>
+    ${ai.photo?`<p><img src="${ai.photo}" alt="" style="max-width:100%;border:1px solid var(--line);border-radius:8px"></p>`:''}
+    <div class="actions"><button type="button" class="btn" data-aicheck-check>${t('aicheck_check')}</button></div>
+    ${res}</section>`;
   },
   /* MCQ Exam: all questions on one page, top to bottom. Submit once at
      the bottom — marks + correct/wrong review appear right away. */
@@ -639,6 +705,7 @@ function render(){
   if(name==='home') html=V.home();
   else if(name==='ask') html=V.ask();
   else if(name==='submit') html=V.submit();
+  else if(name==='aicheck') html=V.aicheck();
   else if(name==='mcq') html=V.mcq();
   else if(name==='contact') html=V.contact();
   else if(state.status!=='ok') html=`<section class="wrap"><h1>${esc(labels[name]||t('nav_search'))}</h1>${body('',3)}</section>`;
@@ -676,8 +743,10 @@ function onHash(){ render(); const v=(location.hash||'#home'); if(v!==lastView){
 /* ---------- events ---------- */
 function setMenu(o){ document.body.classList.toggle('open',o); $('#burger').setAttribute('aria-expanded',o); $('#burger').setAttribute('aria-label',o?'Close menu':'Open menu'); }
 document.addEventListener('click',e=>{
-  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],[data-chapter],[data-mcq-set],[data-mcq-submit],[data-mcq-retry],[data-mcq-back],#burger,#scrim,#menu a,#langbtn');
+  const el=e.target.closest('[data-go],[data-chip],[data-wcat],[data-clear],[data-retry],[data-q],[data-save],[data-chapter],[data-mcq-set],[data-mcq-submit],[data-mcq-retry],[data-mcq-back],[data-aicheck-check],[data-aicheck-reset],#burger,#scrim,#menu a,#langbtn');
   if(!el) return;
+  if(el.dataset.aicheckCheck!==undefined){ runAiCheck(); return; }
+  if(el.dataset.aicheckReset!==undefined){ ai.result=null; ai.status=''; return render(); }
   if(el.dataset.mcqSet!==undefined){ state.mcq={setId:el.dataset.mcqSet,answers:{},submitted:false,name:''}; if(location.hash==='#mcq') render(); else location.hash='mcq'; return; }
   if(el.dataset.mcqBack!==undefined){ state.mcq={setId:null,answers:{},submitted:false,name:''}; return render(); }
   if(el.dataset.mcqRetry!==undefined){ const id=state.mcq.setId; state.mcq={setId:id,answers:{},submitted:false,name:state.mcq.name}; return render(); }
@@ -710,6 +779,9 @@ document.addEventListener('click',e=>{
   if(el.dataset.clear){ const f=state.f[el.dataset.clear]=state.f[el.dataset.clear]||{}; ['cls','chapter','type'].forEach(k=>f[k]=''); if(el.dataset.clear!=='class8'&&el.dataset.clear!=='class9'&&el.dataset.clear!=='class10') f.subject=''; return render(); }
 });
 document.addEventListener('change',e=>{
+  if(e.target.id==='aiset'){ ai.set=e.target.value; ai.q=1; ai.result=null; ai.status=''; return render(); }
+  if(e.target.id==='aiq'){ ai.q=+e.target.value; return; }
+  if(e.target.id==='aiphoto'){ const f=e.target.files&&e.target.files[0]; if(f) aiDownscale(f,url=>{ ai.photo=url; ai.result=null; ai.status=''; render(); }); return; }
   const mq=e.target.closest('input[data-mcq-q]');
   if(mq){ state.mcq.answers[+mq.dataset.mcqQ]=+mq.value; const set=mcqSet(); const c=document.getElementById('mcqcount'); if(set&&c) c.textContent=t('mcq_answered')+': '+num(Object.keys(state.mcq.answers).length)+' / '+num(set.questions.length); return; }
   const s=e.target.closest('select[data-k]');
